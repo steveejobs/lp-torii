@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fffdf9;
+  --foreground: #141414;
+  --torii-red: #c41e2f;
+  --torii-black: #101010;
+  --torii-graphite: #242424;
+  --torii-line: #e8e0d8;
+  --torii-warm: #b87a43;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 249, 0.96), rgba(255, 253, 249, 1)),
+    var(--background);
+  color: var(--foreground);
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+}
+
+@layer components {
+  .container-page {
+    width: min(100% - 32px, 1180px);
+    margin-inline: auto;
+  }
+
+  .btn {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 999px;
+    padding: 13px 20px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1;
+    transition:
+      transform 300ms ease,
+      background-color 300ms ease,
+      border-color 300ms ease,
+      color 300ms ease;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: var(--torii-red);
+    color: white;
+    box-shadow: 0 16px 36px rgba(196, 30, 47, 0.22);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    background: #a91726;
+  }
+
+  .btn-dark {
+    background: var(--torii-black);
+    color: white;
+  }
+
+  .btn-dark:hover {
+    transform: translateY(-2px);
+    background: #2b2b2b;
+  }
+
+  .btn-outline {
+    border: 1px solid rgba(16, 16, 16, 0.16);
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--torii-black);
+  }
+
+  .btn-outline:hover {
+    transform: translateY(-2px);
+    border-color: var(--torii-black);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--torii-red);
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .section-pad {
+    padding-block: 64px;
+  }
+
+  .image-soft {
+    overflow: hidden;
+    border-radius: 8px;
+    background: #efe8df;
+    box-shadow: 0 20px 60px rgba(16, 16, 16, 0.09);
+  }
+
+  .fine-border {
+    border: 1px solid rgba(16, 16, 16, 0.1);
+  }
+}
+
+@keyframes heroClipA {
+  0%,
+  22% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  32%,
+  100% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+    transform: translate3d(16px, 0, 0);
+  }
+}
+
+@keyframes heroClipB {
+  0%,
+  28% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translate3d(-16px, 0, 0);
+  }
+  38%,
+  60% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  72%,
+  100% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+    transform: translate3d(16px, 0, 0);
+  }
+}
+
+@keyframes heroClipC {
+  0%,
+  62% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    transform: translate3d(-16px, 0, 0);
+  }
+  72%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes lineSweep {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  38%,
+  62% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-page {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .section-pad {
+    padding-block: 48px;
+  }
+
+  .btn {
+    width: 100%;
+    min-height: 50px;
+    padding-inline: 16px;
+  }
+}
