@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
-import InkReveal from "@/components/ui/ink-reveal";
 import { images } from "@/lib/site";
 
 type IntroStyle = React.CSSProperties & {
@@ -117,27 +116,8 @@ export function HeroInteractiveIntro() {
             sizes="(max-width: 768px) 100vw, 1180px"
             className="absolute inset-0 object-cover object-[54%_50%] opacity-100 md:object-[58%_48%]"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,249,0.1)_0%,rgba(255,253,249,0.05)_44%,rgba(255,253,249,0.62)_100%)] md:bg-[linear-gradient(90deg,rgba(255,253,249,0.72)_0%,rgba(255,253,249,0.34)_38%,rgba(255,253,249,0.04)_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(196,30,47,0.06),transparent_46%)]" />
-          <InkReveal
-            maskColor={[255, 253, 249]}
-            brushSize={150}
-            lifetime={780}
-            stampStep={14}
-            maxStamps={160}
-            className="hidden md:block"
-            style={{ opacity: 0.58 }}
-            autoMobile={false}
-          />
-          <InkReveal
-            maskColor={[255, 253, 249]}
-            brushSize={118}
-            lifetime={900}
-            stampStep={18}
-            maxStamps={90}
-            className="md:hidden"
-            style={{ opacity: 0.5 }}
-          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.08)_48%,rgba(0,0,0,0.36)_100%)] md:bg-[linear-gradient(90deg,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.13)_38%,rgba(0,0,0,0.02)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(196,30,47,0.08),transparent_44%)]" />
 
           <div className="pointer-events-none absolute inset-0 z-20">
             <div className="intro-sun absolute h-28 w-28 rounded-full bg-[var(--torii-red)] opacity-95 shadow-[0_22px_58px_rgba(196,30,47,0.22)] md:h-44 md:w-44" />
@@ -152,12 +132,12 @@ export function HeroInteractiveIntro() {
               width={170}
               height={74}
               priority
-              className="mb-5 h-auto w-[128px] md:w-[170px]"
+              className="mb-5 h-auto w-[128px] drop-shadow-[0_8px_20px_rgba(0,0,0,0.2)] md:w-[170px]"
             />
-            <p className="max-w-sm text-sm font-black uppercase tracking-[0.08em] text-[var(--torii-red)]">
+            <p className="max-w-sm text-sm font-black uppercase tracking-[0.08em] text-white/82">
               Rodízio, delivery e retirada
             </p>
-            <p className="mt-3 max-w-md text-2xl font-black leading-[1.05] text-neutral-950 md:text-4xl">
+            <p className="mt-3 max-w-md text-2xl font-black leading-[1.05] text-white drop-shadow-[0_10px_28px_rgba(0,0,0,0.28)] md:text-4xl">
               Para abrir a noite com presença, luz quente e cozinha japonesa.
             </p>
           </div>

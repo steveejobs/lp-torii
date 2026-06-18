@@ -4,38 +4,60 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { images } from "@/lib/site";
 
-const galleryImages = [
+type GalleryItem = {
+  type: "image" | "video";
+  src: string;
+  alt: string;
+  poster?: string;
+  className: string;
+  sizes: string;
+};
+
+const galleryItems: GalleryItem[] = [
   {
+    type: "image",
     src: images.foodGallery01,
     alt: "Uramakis com molho sendo servido",
     className: "md:col-span-5 md:row-span-2",
     sizes: "(max-width: 768px) 86vw, 42vw",
   },
   {
+    type: "video",
+    src: images.galleryVideo01,
+    alt: "Vídeo de pratos japoneses do Torii",
+    className: "md:col-span-4 md:row-span-1",
+    sizes: "(max-width: 768px) 76vw, 34vw",
+  },
+  {
+    type: "image",
     src: images.foodGallery02,
     alt: "Sushi com salmão em close",
     className: "md:col-span-3 md:row-span-1",
     sizes: "(max-width: 768px) 76vw, 24vw",
   },
   {
+    type: "image",
     src: images.foodGallery03,
     alt: "Sushi servido em ambiente de luz baixa",
     className: "md:col-span-4 md:row-span-2",
     sizes: "(max-width: 768px) 76vw, 34vw",
   },
   {
+    type: "image",
     src: images.foodGallery04,
     alt: "Sushi em prato com wasabi",
     className: "md:col-span-4 md:row-span-1",
     sizes: "(max-width: 768px) 76vw, 34vw",
   },
   {
+    type: "image",
     src: images.foodGallery05,
     alt: "Uramaki em destaque com fundo desfocado",
     className: "md:col-span-3 md:row-span-2",
     sizes: "(max-width: 768px) 76vw, 24vw",
   },
   {
+    type: "image",
     src: images.foodGallery06,
     alt: "Peças de sushi em mesa clara",
     className: "md:col-span-5 md:row-span-1",
@@ -53,6 +75,7 @@ const categories = [
 
 export function FoodGallerySection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -85,6 +108,18 @@ export function FoodGallerySection() {
     };
   }, []);
 
+  useEffect(() => {
+    videoRefs.current.forEach((video) => {
+      if (!video) return;
+
+      if (isVisible && !reducedMotion) {
+        void video.play().catch(() => undefined);
+      } else {
+        video.pause();
+      }
+    });
+  }, [isVisible, reducedMotion]);
+
   return (
     <section
       id="destaques"
@@ -109,11 +144,11 @@ export function FoodGallerySection() {
           id="destaques-gallery"
           className="no-scrollbar mt-10 flex gap-3 overflow-x-auto pb-2 md:grid md:auto-rows-[178px] md:grid-cols-12 md:gap-4 md:overflow-visible md:pb-0 lg:auto-rows-[196px]"
         >
-          {galleryImages.map((image, index) => (
+          {galleryItems.map((item, index) => (
             <figure
-              key={image.src}
+              key={`${item.type}-${item.src}`}
               className={`group relative h-[320px] min-w-[76vw] overflow-hidden rounded-lg bg-neutral-950 shadow-[0_20px_60px_rgba(16,16,16,0.08)] transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:h-auto md:min-w-0 ${
-                image.className
+                item.className
               } ${
                 isVisible || reducedMotion
                   ? "translate-y-0 scale-100 opacity-100"
@@ -121,15 +156,34 @@ export function FoodGallerySection() {
               }`}
               style={{ transitionDelay: `${index * 75}ms` }}
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes={image.sizes}
-                quality={88}
-                loading="lazy"
-                className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]"
-              />
+              {item.type === "video" ? (
+                <video
+                  ref={(node) => {
+                    videoRefs.current[index] = node;
+                  }}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={item.poster}
+                  aria-label={item.alt}
+                  className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]"
+                  controls={false}
+                  disablePictureInPicture
+                >
+                  <source src={item.src} type="video/mp4" />
+                </video>
+              ) : (
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  sizes={item.sizes}
+                  quality={88}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]"
+                />
+              )}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-white/5 opacity-80" />
             </figure>
           ))}

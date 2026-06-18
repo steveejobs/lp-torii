@@ -59,6 +59,8 @@ export const images = {
   foodGallery05: "/imagens%20torii/pexels-nandosmac-7717517.jpg",
   foodGallery06: "/imagens%20torii/pexels-anhelina-vasylyk-734724285-34303217.jpg",
   scrollExperienceBg: "/torii/scroll-experience-bg.jpg",
+  scrollMainVideo: "/torii/scroll-experience-video-mobile.mp4",
+  galleryVideo01: "/torii/scroll-experience-video.mp4",
   scrollExperienceMobile01: "/torii/scroll-experience-mobile-01.jpg",
   scrollExperienceMobile02: "/torii/scroll-experience-mobile-02.jpg",
   scrollExperienceVideo: "/torii/scroll-experience-video.mp4",
