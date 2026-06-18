@@ -110,7 +110,7 @@ export function HeroInteractiveIntro() {
         >
           <Image
             src={images.heroIntro}
-            alt="Preparo de sushi do Torii em bancada"
+            alt="Ambiente interno do Torii com luz quente e balcao iluminado"
             fill
             priority
             quality={92}

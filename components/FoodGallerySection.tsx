@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { images } from "@/lib/site";
+import { foodGalleryMedia } from "@/data/torii-media";
 
 type GalleryItem = {
   src: string;
@@ -14,7 +14,7 @@ const categories = [
   "Temakis",
   "Pokes",
   "Combinados",
-  "Peças especiais",
+  "Pecas especiais",
 ];
 
 function GalleryCard({
@@ -47,12 +47,52 @@ function GalleryCard({
             ? "(max-width: 768px) 72vw, 300px"
             : "(max-width: 768px) 72vw, 360px"
         }
-        quality={84}
+        quality={88}
         loading="lazy"
         className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:group-hover:scale-[1.02]"
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-transparent" />
     </figure>
+  );
+}
+
+function GalleryLoop({
+  items,
+  direction,
+  animationState,
+  indexOffset = 0,
+}: {
+  items: GalleryItem[];
+  direction: "left" | "right";
+  animationState: "running" | "paused";
+  indexOffset?: number;
+}) {
+  return (
+    <div
+      className={`gallery-marquee ${
+        direction === "left" ? "gallery-marquee-left" : "gallery-marquee-right"
+      } flex w-max gap-4`}
+      style={{ animationPlayState: animationState }}
+    >
+      <div className="flex gap-4">
+        {items.map((item, index) => (
+          <GalleryCard
+            key={`${item.src}-${direction}`}
+            item={item}
+            index={index + indexOffset}
+          />
+        ))}
+      </div>
+      <div className="flex gap-4" aria-hidden="true">
+        {items.map((item, index) => (
+          <GalleryCard
+            key={`${item.src}-${direction}-loop`}
+            item={item}
+            index={index + indexOffset}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -62,16 +102,13 @@ export function FoodGallerySection() {
   const [reducedMotion, setReducedMotion] = useState(false);
 
   const galleryItems = useMemo<GalleryItem[]>(
-    () =>
-      images.foodGallery.map((src, index) => ({
-        src,
-        alt: `Seleção de comida japonesa do Torii ${index + 1}`,
-      })),
+    () => foodGalleryMedia.map((item) => ({ src: item.src, alt: item.alt })),
     [],
   );
 
-  const firstRow = galleryItems.filter((_, index) => index % 2 === 0);
-  const secondRow = galleryItems.filter((_, index) => index % 2 === 1);
+  const midpoint = Math.ceil(galleryItems.length / 2);
+  const firstRow = galleryItems.slice(0, midpoint);
+  const secondRow = galleryItems.slice(midpoint);
   const animationState = isVisible && !reducedMotion ? "running" : "paused";
 
   useEffect(() => {
@@ -117,7 +154,7 @@ export function FoodGallerySection() {
             </h2>
           </div>
           <p className="max-w-xl text-base font-semibold leading-7 text-neutral-600 md:justify-self-end md:text-lg">
-            Sushis, temakis, pokes, combinados e peças especiais em uma seleção
+            Sushis, temakis, pokes, combinados e pecas especiais em uma selecao
             pensada para a noite.
           </p>
         </div>
@@ -137,30 +174,17 @@ export function FoodGallerySection() {
         </div>
 
         <div className="hidden space-y-4 md:block">
-          <div
-            className="gallery-marquee gallery-marquee-left flex w-max gap-4"
-            style={{ animationPlayState: animationState }}
-          >
-            {[...firstRow, ...firstRow].map((item, index) => (
-              <GalleryCard
-                key={`${item.src}-row-a-${index}`}
-                item={item}
-                index={index}
-              />
-            ))}
-          </div>
-          <div
-            className="gallery-marquee gallery-marquee-right flex w-max gap-4"
-            style={{ animationPlayState: animationState }}
-          >
-            {[...secondRow, ...secondRow].map((item, index) => (
-              <GalleryCard
-                key={`${item.src}-row-b-${index}`}
-                item={item}
-                index={index + 2}
-              />
-            ))}
-          </div>
+          <GalleryLoop
+            items={firstRow}
+            direction="left"
+            animationState={animationState}
+          />
+          <GalleryLoop
+            items={secondRow}
+            direction="right"
+            animationState={animationState}
+            indexOffset={2}
+          />
         </div>
       </div>
 

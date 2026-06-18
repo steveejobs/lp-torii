@@ -160,7 +160,7 @@ export default function ScrollExpandMedia({
     isMobile && mobilePosterSrc ? mobilePosterSrc : posterSrc;
   const expansionProgress = reducedMotion
     ? 0
-    : easeOutCubic(mapRange(progress, 0.1, 0.82, 0, 1));
+    : easeOutCubic(mapRange(progress, 0.08, 0.96, 0, 1));
   const textFadeProgress = reducedMotion
     ? 0
     : easeOutCubic(mapRange(progress, 0.08, 0.45, 0, 1));
@@ -201,10 +201,10 @@ export default function ScrollExpandMedia({
   const cardStyle = isMobile ? mobileCardStyle : desktopCardStyle;
   const sectionClassName = reducedMotion
     ? "relative isolate overflow-clip bg-[#fffdf9]"
-    : "relative isolate overflow-clip bg-[#fffdf9] md:h-[190svh]";
+    : "relative isolate overflow-clip bg-[#fffdf9] md:h-[170svh]";
   const stageClassName = reducedMotion
-    ? "relative flex min-h-[92svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-12 md:min-h-svh"
-    : "relative flex min-h-[92svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-12 md:sticky md:top-0 md:h-svh md:min-h-0 md:gap-0 md:p-0";
+    ? "relative flex min-h-[86svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-10 md:min-h-svh"
+    : "relative flex min-h-[86svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-10 md:sticky md:top-0 md:h-svh md:min-h-0 md:gap-0 md:p-0";
 
   return (
     <section ref={sectionRef} className={sectionClassName} aria-label={title}>

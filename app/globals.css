@@ -295,7 +295,7 @@ img {
 }
 
 .gallery-marquee {
-  animation-duration: 46s;
+  animation-duration: 92s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   will-change: transform;

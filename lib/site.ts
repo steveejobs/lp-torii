@@ -1,3 +1,12 @@
+import {
+  facadeMedia,
+  foodGalleryMedia,
+  heroMedia,
+  locationMedia,
+  logoMedia,
+  scrollExperienceMedia,
+} from "@/data/torii-media";
+
 export const WHATSAPP_NUMBER = "5563992374088";
 export const ADDRESS = "Torii Restaurante Japonês, Araguaína - TO";
 export const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/CgjYuo1yPmZVKJbz7";
@@ -37,37 +46,13 @@ export const navLinks = [
 ];
 
 export const images = {
-  logo: "/favicon%20torii/logo%20torii.png",
-  fachada: "/torii/fachada-torii.png",
-  ambienteInterno: "/torii/ambiente-interno-torii.png",
-  heroIntro: "/torii/hero-chef-preparo.jpg",
-  foodGallery: [
-    "/torii/gallery-food-01.png",
-    "/torii/gallery-food-02.png",
-    "/torii/gallery-food-03.png",
-    "/torii/gallery-food-04.png",
-    "/torii/gallery-food-05.png",
-    "/torii/gallery-food-06.png",
-    "/torii/gallery-food-07.png",
-    "/torii/gallery-food-08.png",
-    "/torii/gallery-food-09.png",
-    "/torii/gallery-food-10.jpg",
-    "/torii/gallery-food-11.jpg",
-    "/torii/gallery-food-12.jpg",
-    "/torii/gallery-food-13.jpg",
-    "/torii/gallery-food-14.jpg",
-    "/torii/gallery-food-15.jpg",
-    "/torii/gallery-food-16.jpg",
-    "/torii/gallery-food-17.jpg",
-    "/torii/gallery-food-18.jpg",
-    "/torii/gallery-food-19.jpg",
-  ],
-  scrollExperienceBg: "/torii/scroll-experience-bg.jpg",
-  scrollExperienceMobile01: "/torii/scroll-experience-mobile-01.jpg",
-  scrollExperienceMobile02: "/torii/scroll-experience-mobile-02.jpg",
-  scrollExperienceVideo: "/torii/scroll-experience-video.mp4",
-  scrollExperienceVideoMobile: "/torii/scroll-experience-video-mobile.mp4",
-  ambiente1: "/torii/ambiente-interno-torii.png",
-  ambiente2: "/torii/fachada-torii.png",
-  ambiente3: "/torii/hero-chef-preparo.jpg",
+  logo: logoMedia.src,
+  fachada: facadeMedia.src,
+  ambienteInterno: heroMedia[0].src,
+  heroIntro: heroMedia[0].src,
+  foodGallery: foodGalleryMedia.map((item) => item.src),
+  scrollExperienceBg: scrollExperienceMedia.background.src,
+  scrollMainVideo: scrollExperienceMedia.video,
+  scrollMainVideoMobile: scrollExperienceMedia.mobileVideo,
+  locationFacade: locationMedia[0].src,
 };

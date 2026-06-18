@@ -201,6 +201,8 @@ export default function Home() {
                   alt="Salão interno do Torii com balcão iluminado"
                   width={1122}
                   height={1402}
+                  sizes="(max-width: 768px) 92vw, 46vw"
+                  loading="lazy"
                   className="h-full w-full object-cover object-center"
                 />
               </div>
@@ -216,16 +218,15 @@ export default function Home() {
                     className="h-full w-full object-cover object-center"
                   />
                 </div>
-                <div className="image-soft aspect-[4/3]">
-                  <Image
-                    src={images.ambienteInterno}
-                    alt="Detalhe do balcão iluminado do Torii"
-                    width={1122}
-                    height={1402}
-                    loading="lazy"
-                    sizes="(max-width: 768px) 92vw, 42vw"
-                    className="h-full w-full object-cover object-[58%_42%]"
-                  />
+                <div className="rounded-lg border border-black/10 bg-[#fffaf4] p-6 md:min-h-[260px]">
+                  <div className="h-px w-20 bg-[var(--torii-red)]" />
+                  <p className="mt-7 max-w-sm text-3xl font-black leading-tight text-neutral-950">
+                    Luz baixa, madeira quente e ritmo de jantar.
+                  </p>
+                  <p className="mt-4 text-base font-bold leading-7 text-neutral-600">
+                    Mesas para jantar com calma, atendimento direto e uma
+                    atmosfera quente sem excesso visual.
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -378,7 +379,7 @@ export default function Home() {
 
             <div className="relative min-h-[340px] overflow-hidden rounded-lg border border-black/10 bg-neutral-900 shadow-[0_22px_60px_rgba(16,16,16,0.1)] md:min-h-[430px]">
               <Image
-                src={images.fachada}
+                src={images.locationFacade}
                 alt="Fachada do Torii à noite"
                 fill
                 sizes="(max-width: 768px) 92vw, 48vw"
