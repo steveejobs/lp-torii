@@ -31,6 +31,12 @@ interface InkRevealProps {
   style?: React.CSSProperties;
   /** Enables the mobile viewport-driven automated stroke path */
   autoMobile?: boolean;
+  /** Runs an initial stroke and fades the mask away once the image is revealed */
+  autoReveal?: boolean;
+  /** Delay before the mask starts fading out after the first reveal */
+  revealDelay?: number;
+  /** Duration of the final mask fade */
+  revealFadeDuration?: number;
 }
 
 interface Stamp {
@@ -56,6 +62,9 @@ export default function InkReveal({
   className,
   style,
   autoMobile = true,
+  autoReveal = false,
+  revealDelay = 1200,
+  revealFadeDuration = 900,
 }: InkRevealProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stampsRef = useRef<Stamp[]>([]);
@@ -65,6 +74,8 @@ export default function InkReveal({
   const pointerRef = useRef<{ x: number; y: number } | null>(null);
   const pointerFrameRef = useRef<number | null>(null);
   const canvasRectRef = useRef<DOMRect | null>(null);
+  const revealedRef = useRef(false);
+  const revealTimeoutRef = useRef<number | null>(null);
 
   const mc = maskColor;
 
@@ -90,6 +101,9 @@ export default function InkReveal({
     ctx.globalCompositeOperation = "source-over";
     ctx.fillStyle = `rgb(${mc[0]},${mc[1]},${mc[2]})`;
     ctx.fillRect(0, 0, w, h);
+    if (revealedRef.current) {
+      canvas.style.opacity = "0";
+    }
   }, [mc]);
 
   const carveInk = useCallback(
@@ -192,7 +206,7 @@ export default function InkReveal({
       carveInk(ctx, stamps[i].x, stamps[i].y, r, stamps[i].seed, alpha);
     }
 
-    if (stamps.length) {
+    if (stamps.length && !revealedRef.current) {
       requestAnimationFrame(loop);
     } else {
       runningRef.current = false;
@@ -214,6 +228,54 @@ export default function InkReveal({
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas || !autoReveal) return;
+
+    const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let started = 0;
+
+    const completeReveal = () => {
+      if (revealedRef.current) return;
+      revealedRef.current = true;
+      canvas.style.opacity = "0";
+      canvas.style.pointerEvents = "none";
+    };
+
+    if (reducedQuery.matches) {
+      completeReveal();
+      return;
+    }
+
+    const run = (time: number) => {
+      if (!started) started = time;
+      const elapsed = time - started;
+      const { w, h } = dimsRef.current;
+      const t = elapsed / 1000;
+      const x = w * (0.18 + 0.64 * Math.min(elapsed / revealDelay, 1));
+      const y = h * (0.42 + Math.sin(t * 4.2) * 0.16);
+
+      stampAlong(x, y);
+      startLoop();
+
+      if (elapsed < revealDelay) {
+        frame = requestAnimationFrame(run);
+      } else {
+        revealTimeoutRef.current = window.setTimeout(completeReveal, 80);
+      }
+    };
+
+    frame = requestAnimationFrame(run);
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      if (revealTimeoutRef.current !== null) {
+        window.clearTimeout(revealTimeoutRef.current);
+      }
+    };
+  }, [autoReveal, revealDelay, stampAlong, startLoop]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
     if (!canvas || !autoMobile) return;
 
     const mobileQuery = window.matchMedia("(max-width: 767px)");
@@ -231,7 +293,12 @@ export default function InkReveal({
     };
 
     const run = (time: number) => {
-      if (!visible || !mobileQuery.matches || reducedQuery.matches) {
+      if (
+        revealedRef.current ||
+        !visible ||
+        !mobileQuery.matches ||
+        reducedQuery.matches
+      ) {
         frame = 0;
         return;
       }
@@ -301,15 +368,19 @@ export default function InkReveal({
         inset: 0,
         zIndex: 1,
         cursor: "none",
+        opacity: 1,
+        transition: `opacity ${revealFadeDuration}ms cubic-bezier(0.22, 1, 0.36, 1)`,
         ...style,
       }}
       onMouseEnter={(e) => {
+        if (revealedRef.current) return;
         canvasRectRef.current = e.currentTarget.getBoundingClientRect();
         const pos = getRelativePos(e);
         lastPosRef.current = pos;
         queuePointer(pos.x, pos.y);
       }}
       onMouseMove={(e) => {
+        if (revealedRef.current) return;
         const pos = getRelativePos(e);
         queuePointer(pos.x, pos.y);
       }}

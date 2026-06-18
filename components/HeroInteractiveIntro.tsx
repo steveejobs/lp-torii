@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
+import InkReveal from "@/components/ui/ink-reveal";
 import { images } from "@/lib/site";
 
 type IntroStyle = React.CSSProperties & {
@@ -118,6 +119,31 @@ export function HeroInteractiveIntro() {
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.08)_48%,rgba(0,0,0,0.36)_100%)] md:bg-[linear-gradient(90deg,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.13)_38%,rgba(0,0,0,0.02)_100%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(196,30,47,0.08),transparent_44%)]" />
+          <InkReveal
+            maskColor={[16, 16, 16]}
+            brushSize={172}
+            lifetime={980}
+            stampStep={14}
+            maxStamps={190}
+            gradientStops={[1, 0.82, 0]}
+            autoMobile={false}
+            autoReveal
+            revealDelay={1180}
+            revealFadeDuration={760}
+            className="hidden md:block"
+          />
+          <InkReveal
+            maskColor={[16, 16, 16]}
+            brushSize={128}
+            lifetime={1050}
+            stampStep={18}
+            maxStamps={110}
+            gradientStops={[1, 0.84, 0]}
+            autoReveal
+            revealDelay={1040}
+            revealFadeDuration={720}
+            className="md:hidden"
+          />
 
           <div className="pointer-events-none absolute inset-0 z-20">
             <div className="intro-sun absolute h-28 w-28 rounded-full bg-[var(--torii-red)] opacity-95 shadow-[0_22px_58px_rgba(196,30,47,0.22)] md:h-44 md:w-44" />

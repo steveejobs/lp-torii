@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { SocialIconLinks } from "@/components/SocialIconLinks";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import {
   buildWhatsappLink,
   images,
@@ -51,11 +52,13 @@ export function Header() {
 
         <a
           href={buildWhatsappLink(whatsappMessages.headerReservation)}
-          className="btn btn-primary min-h-10 w-auto shrink-0 px-4 text-xs md:hidden"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--torii-red)] text-white shadow-[0_12px_26px_rgba(196,30,47,0.22)] transition hover:bg-[#a91726]"
           target="_blank"
           rel="noreferrer"
+          aria-label="Reservar pelo WhatsApp"
+          title="WhatsApp"
         >
-          WhatsApp
+          <WhatsAppIcon className="h-[18px] w-[18px]" />
         </a>
       </div>
     </header>
