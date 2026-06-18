@@ -9,8 +9,8 @@ type InstagramTestimonialsMarqueeProps = {
 
 function ReviewCard({ review }: { review: ToriiReview }) {
   return (
-    <article className="h-[150px] w-[282px] shrink-0 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.05)]">
-      <p className="text-sm font-black text-[var(--torii-red)]">★★★★★</p>
+    <article className="h-[136px] w-[280px] shrink-0 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_24px_rgba(16,16,16,0.055)]">
+      <span className="block h-1.5 w-8 rounded-full bg-[var(--torii-red)]" />
       <p className="mt-3 line-clamp-3 text-sm font-bold leading-6 text-neutral-700">
         {review.text}
       </p>
@@ -42,13 +42,13 @@ function ReviewRow({
     >
       <div className="flex gap-3">
         {reviews.map((review, index) => (
-          <ReviewCard key={`${review.name}-${index}-${direction}`} review={review} />
+          <ReviewCard key={`${review.text}-${index}-${direction}`} review={review} />
         ))}
       </div>
       <div className="flex gap-3" aria-hidden="true">
         {reviews.map((review, index) => (
           <ReviewCard
-            key={`${review.name}-${index}-${direction}-loop`}
+            key={`${review.text}-${index}-${direction}-loop`}
             review={review}
           />
         ))}
@@ -98,7 +98,7 @@ export function InstagramTestimonialsMarquee({
           Quem conhece, volta.
         </h2>
         <p className="mt-1 text-sm font-bold leading-6 text-neutral-600">
-          Avaliações reais de clientes do Torii.
+          Comentários curtos sobre a experiência no Torii.
         </p>
       </div>
       <div className="mt-4 grid gap-3">
