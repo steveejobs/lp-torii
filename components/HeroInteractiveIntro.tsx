@@ -89,11 +89,11 @@ export function HeroInteractiveIntro() {
   }, [setVars]);
 
   return (
-    <section className="bg-[#fffdf9] pt-6 md:pt-8" aria-label="Abertura Torii">
+    <section className="bg-[#fffdf9] pt-5 md:pt-8" aria-label="Abertura Torii">
       <div className="container-page">
         <div
           ref={stageRef}
-          className="intro-stage relative isolate h-[340px] overflow-hidden rounded-lg border border-black/10 bg-[#fffdf9] shadow-[0_26px_70px_rgba(16,16,16,0.08)] md:h-[440px]"
+          className="intro-stage relative isolate h-[380px] overflow-hidden rounded-lg border border-black/10 bg-[#fffdf9] shadow-[0_26px_70px_rgba(16,16,16,0.08)] md:h-[440px]"
           style={{ "--x": "58%", "--y": "44%" } as IntroStyle}
           onMouseMove={(event) => {
             pointerRef.current = { x: event.clientX, y: event.clientY };
@@ -109,14 +109,22 @@ export function HeroInteractiveIntro() {
           }}
         >
           <Image
-            src={images.ambiente1}
+            src={images.fachada}
+            alt="Fachada do Torii Restaurante Japonês"
+            fill
+            priority
+            sizes="(max-width: 768px) 92vw, 1180px"
+            className="absolute inset-0 object-cover object-[54%_48%] opacity-95 md:hidden"
+          />
+          <Image
+            src={images.ambienteInterno}
             alt="Ambiente do Torii Restaurante Japonês"
             fill
             priority
             sizes="(max-width: 768px) 92vw, 1180px"
-            className="absolute inset-0 object-cover opacity-95"
+            className="absolute inset-0 hidden object-cover object-[52%_50%] opacity-95 md:block"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,253,249,0.98)_0%,rgba(255,253,249,0.72)_42%,rgba(255,253,249,0.22)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,249,0.62)_0%,rgba(255,253,249,0.28)_38%,rgba(255,253,249,0.86)_100%)] md:bg-[linear-gradient(90deg,rgba(255,253,249,0.98)_0%,rgba(255,253,249,0.72)_42%,rgba(255,253,249,0.22)_100%)]" />
           <InkReveal
             maskColor={[255, 253, 249]}
             brushSize={150}
@@ -154,7 +162,7 @@ export function HeroInteractiveIntro() {
               Rodízio, delivery e retirada
             </p>
             <p className="mt-3 max-w-md text-2xl font-black leading-[1.05] text-neutral-950 md:text-4xl">
-              Uma abertura leve para a noite japonesa em Araguaína.
+              Para abrir a noite com presença, luz quente e cozinha japonesa.
             </p>
           </div>
         </div>

@@ -1,20 +1,33 @@
-import { Reveal } from "@/components/Reveal";
-import ScrollExpansionHero from "@/components/ui/scroll-expansion-hero";
+"use client";
+
+import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
 import { images } from "@/lib/site";
 
 export function ScrollExperienceFeature() {
   return (
-    <Reveal threshold={0.42}>
-      <ScrollExpansionHero
-        eyebrow="A experiência Torii"
-        title="Da entrada ao primeiro prato."
-        text="Uma noite japonesa com ambiente, atendimento e cozinha pensados para compartilhar."
-        bgDesktopSrc={images.scrollExperienceBg}
-        bgMobileSrc={images.scrollExperienceMobile01}
-        bgMobileAltSrc={images.scrollExperienceMobile02}
-        videoDesktopSrc={images.scrollExperienceVideo}
-        videoMobileSrc={images.scrollExperienceVideoMobile}
-      />
-    </Reveal>
+    <ScrollExpandMedia
+      mediaType="video"
+      mediaSrc={images.scrollExperienceVideo}
+      mobileMediaSrc={images.scrollExperienceVideoMobile}
+      posterSrc={images.scrollExperienceBg}
+      mobilePosterSrc={images.scrollExperienceMobile01}
+      bgImageSrc={images.scrollExperienceBg}
+      mobileBgImageSrc={images.scrollExperienceMobile02}
+      title="Do salão ao primeiro prato."
+      date="Torii à noite"
+      scrollToExpand="Role para ver a transição"
+      textBlend
+    >
+      <div className="grid gap-4 md:grid-cols-2">
+        <p>
+          A luz quente e o contraste preto conduzem a passagem do ambiente para
+          a cozinha, sem transformar a seção em uma segunda abertura do site.
+        </p>
+        <p>
+          No celular, o vídeo fica direto e leve; no desktop, a mídia ganha
+          presença conforme a seção entra no centro da tela.
+        </p>
+      </div>
+    </ScrollExpandMedia>
   );
 }

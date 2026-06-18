@@ -50,10 +50,10 @@ const kitchenHighlights = [
   },
 ];
 
-const reviews = [
-  "Atendimento excelente e comida muito bem servida.",
-  "Ambiente agradável para ir com a família.",
-  "Ótima opção de japonês em Araguaína.",
+const googleProofCards = [
+  { label: "Nota no Google", value: "4,4" },
+  { label: "Avaliações", value: "382" },
+  { label: "Perfil", value: "Torii-Japanese" },
 ];
 
 export default function Home() {
@@ -75,7 +75,7 @@ export default function Home() {
                 width={168}
                 height={72}
                 priority
-                className="mb-6 h-auto w-[132px] object-contain md:w-[160px]"
+                className="mb-6 hidden h-auto w-[132px] object-contain md:block md:w-[160px]"
               />
               <span className="eyebrow">Araguaína - TO</span>
               <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[0.98] text-neutral-950 md:text-7xl">
@@ -111,25 +111,37 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-b border-black/10 bg-white">
+        <section className="border-y border-black/5 bg-[#fffaf4]">
           <Reveal
             threshold={0.35}
-            className="container-page flex flex-wrap items-center justify-center gap-x-4 gap-y-2 py-4 text-center text-xs font-black uppercase tracking-wide text-neutral-700 md:text-sm"
+            className="container-page flex flex-col items-center justify-center gap-3 py-4 text-center md:flex-row md:gap-5"
           >
-            {[
-              "Rodízio à noite",
-              "Delivery",
-              "Retirada",
-              "Araguaína - TO",
-              "Reserva pelo WhatsApp",
-            ].map((item, index) => (
-              <span key={item} className="flex items-center gap-4">
-                {index > 0 ? (
-                  <span className="h-4 w-px bg-black/20" aria-hidden="true" />
-                ) : null}
-                {item}
+            <p className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-black text-neutral-900 shadow-[0_10px_24px_rgba(16,16,16,0.04)]">
+              <span className="text-[var(--torii-red)]" aria-hidden="true">
+                ★★★★★
               </span>
-            ))}
+              <span>4,4 no Google · 382 avaliações</span>
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {[
+                "Rodízio à noite",
+                "Delivery",
+                "Retirada",
+                "Araguaína - TO",
+                "Reserva pelo WhatsApp",
+              ].map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center rounded-full border border-[#eee3d8] bg-white px-3.5 py-2 text-[0.72rem] font-black uppercase tracking-wide text-neutral-700 shadow-[0_8px_18px_rgba(16,16,16,0.025)]"
+                >
+                  <span
+                    className="mr-2 h-1.5 w-1.5 rounded-full bg-[var(--torii-red)]"
+                    aria-hidden="true"
+                  />
+                  {item}
+                </span>
+              ))}
+            </div>
           </Reveal>
         </section>
 
@@ -286,20 +298,17 @@ export default function Home() {
             />
             <div className="rounded-lg border border-white/12 bg-white/6 p-6 backdrop-blur">
               <ul className="grid gap-3 text-base font-bold text-white/82">
-                {[
-                  "Ideal para famílias",
-                  "Casais",
-                  "Grupos",
-                  "Jantar à noite",
-                ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0"
-                  >
-                    <span className="h-2 w-2 rounded-full bg-[var(--torii-red)]" />
-                    {item}
-                  </li>
-                ))}
+                {["Ideal para famílias", "Casais", "Grupos", "Jantar à noite"].map(
+                  (item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0"
+                    >
+                      <span className="h-2 w-2 rounded-full bg-[var(--torii-red)]" />
+                      {item}
+                    </li>
+                  ),
+                )}
               </ul>
               <a
                 href={buildWhatsappLink(whatsappMessages.rodizioSection)}
@@ -325,17 +334,29 @@ export default function Home() {
                   <p className="text-2xl font-black text-[var(--torii-red)]">
                     ★★★★★
                   </p>
-                  <p className="mt-2 text-lg font-black text-neutral-950">
-                    Avaliações no Google
+                  <h2 className="mt-3 text-3xl font-black leading-tight text-neutral-950">
+                    Quem conhece, volta.
+                  </h2>
+                  <p className="mt-3 text-base font-bold leading-7 text-neutral-600">
+                    4,4 no Google com 382 avaliações de clientes do
+                    Torii-Japanese.
                   </p>
                 </div>
               </div>
               <div className="grid gap-4 md:grid-cols-3">
-                {reviews.map((review, index) => (
-                  <Reveal key={review} delay={index * 80} threshold={0.22}>
-                    <blockquote className="fine-border rounded-lg bg-white p-5 text-base font-bold leading-7 text-neutral-700 shadow-sm">
-                      “{review}”
-                    </blockquote>
+                {googleProofCards.map((item, index) => (
+                  <Reveal key={item.label} delay={index * 80} threshold={0.22}>
+                    <article className="fine-border rounded-lg bg-white p-5 shadow-sm">
+                      <p className="text-xs font-black uppercase tracking-wide text-[var(--torii-red)]">
+                        Avaliação do Google
+                      </p>
+                      <p className="mt-4 text-3xl font-black text-neutral-950">
+                        {item.value}
+                      </p>
+                      <p className="mt-2 text-sm font-bold text-neutral-600">
+                        {item.label}
+                      </p>
+                    </article>
                   </Reveal>
                 ))}
               </div>

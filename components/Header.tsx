@@ -10,19 +10,19 @@ import {
 export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/86 backdrop-blur-xl">
-      <div className="container-page flex h-16 items-center justify-between gap-3 md:h-20">
+      <div className="container-page flex h-16 items-center justify-between gap-4 md:h-20 md:gap-6">
         <a
           href="#topo"
-          className="flex min-w-0 items-center gap-3"
+          className="flex shrink-0 items-center gap-3"
           aria-label="Torii Restaurante Japonês"
         >
           <Image
             src={images.logo}
             alt="Torii Restaurante Japonês"
-            width={148}
+            width={190}
             height={64}
             priority
-            className="h-auto max-h-9 w-[112px] object-contain md:w-[136px]"
+            className="h-auto max-h-11 w-[128px] max-w-[38vw] object-contain md:max-h-14 md:w-[164px] lg:w-[172px]"
           />
         </a>
 
@@ -51,7 +51,7 @@ export function Header() {
 
         <a
           href={buildWhatsappLink(whatsappMessages.headerReservation)}
-          className="btn btn-primary min-h-10 px-4 text-xs md:hidden"
+          className="btn btn-primary min-h-10 w-auto shrink-0 px-4 text-xs md:hidden"
           target="_blank"
           rel="noreferrer"
         >

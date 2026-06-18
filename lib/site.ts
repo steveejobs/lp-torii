@@ -1,7 +1,6 @@
 export const WHATSAPP_NUMBER = "5563992374088";
 export const ADDRESS = "Torii Restaurante Japonês, Araguaína - TO";
-export const GOOGLE_MAPS_URL =
-  "https://maps.app.goo.gl/CgjYuo1yPmZVKJbz7";
+export const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/CgjYuo1yPmZVKJbz7";
 export const INSTAGRAM_URL =
   "https://www.instagram.com/toriirestaurantejapones/";
 export const OPENING_HOURS = "Horário editável: terça a domingo, à noite";
