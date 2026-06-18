@@ -310,6 +310,55 @@ img {
   }
 }
 
+.ig-marquee {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.ig-marquee-left {
+  animation: igMarqueeLeft 36s linear infinite;
+}
+
+.ig-testimonials-left {
+  animation: igMarqueeLeft 38s linear infinite;
+}
+
+.ig-testimonials-right {
+  animation: igMarqueeRight 44s linear infinite;
+}
+
+.ig-video-reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0) scale(0.96);
+  transition:
+    opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ig-video-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+@keyframes igMarqueeLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-50% - 6px), 0, 0);
+  }
+}
+
+@keyframes igMarqueeRight {
+  from {
+    transform: translate3d(calc(-50% - 6px), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .gallery-marquee {
   animation-duration: 92s;
   animation-timing-function: linear;
@@ -362,6 +411,15 @@ img {
   .gallery-marquee {
     animation: none !important;
     transform: none !important;
+  }
+
+  .ig-rise,
+  .ig-marquee,
+  .ig-video-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 

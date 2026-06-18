@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { InstagramMediaMarquee } from "@/components/InstagramMediaMarquee";
+import { InstagramTestimonialsMarquee } from "@/components/InstagramTestimonialsMarquee";
+import { InstagramVideoMoment } from "@/components/InstagramVideoMoment";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import { toriiReviews } from "@/data/torii-reviews";
+import {
+  facadeMedia,
+  foodGalleryMedia,
+  logoMedia,
+  scrollExperienceMedia,
+} from "@/data/torii-media";
 import {
   ADDRESS,
   FULL_SITE_URL,
@@ -9,7 +19,6 @@ import {
   OPENING_HOURS,
   createWhatsAppLink,
 } from "@/lib/site";
-import { environmentMedia, foodGalleryMedia, logoMedia } from "@/data/torii-media";
 
 export const metadata: Metadata = {
   metadataBase: new URL(FULL_SITE_URL),
@@ -44,25 +53,15 @@ const whatsappLinks = {
   ),
 };
 
-const showcaseMedia = [
-  {
-    ...foodGalleryMedia[9],
-    label: "Cozinha",
-    className: "col-span-2 row-span-2",
-    priority: true,
-  },
-  {
-    ...environmentMedia[0],
-    label: "Ambiente",
-    className: "",
-    priority: false,
-  },
-  {
-    ...foodGalleryMedia[14],
-    label: "Noite",
-    className: "",
-    priority: false,
-  },
+const instagramGalleryMedia = [
+  foodGalleryMedia[9],
+  foodGalleryMedia[2],
+  foodGalleryMedia[5],
+  facadeMedia,
+  foodGalleryMedia[11],
+  foodGalleryMedia[14],
+  foodGalleryMedia[17],
+  foodGalleryMedia[18],
 ];
 
 const nightChoices = ["Rodízio à noite", "Delivery", "Retirada"];
@@ -117,20 +116,18 @@ function LinkButton({
   icon,
   primary = false,
   delay,
-  external = true,
 }: {
   href: string;
   children: React.ReactNode;
   icon: React.ReactNode;
   primary?: boolean;
   delay: number;
-  external?: boolean;
 }) {
   return (
     <a
       href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noreferrer" : undefined}
+      target="_blank"
+      rel="noreferrer"
       className={`ig-rise flex min-h-[56px] items-center justify-between gap-4 rounded-[18px] border px-5 text-[0.95rem] font-black transition active:scale-[0.985] ${
         primary
           ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_16px_34px_rgba(16,16,16,0.16)]"
@@ -141,7 +138,9 @@ function LinkButton({
       <span className="flex items-center gap-3">
         <span
           className={`flex h-9 w-9 items-center justify-center rounded-full ${
-            primary ? "bg-white/12 text-white" : "bg-[#fff4ec] text-[var(--torii-red)]"
+            primary
+              ? "bg-white/12 text-white"
+              : "bg-[#fff4ec] text-[var(--torii-red)]"
           }`}
         >
           {icon}
@@ -156,7 +155,7 @@ function LinkButton({
 export default function InstagramLinksPage() {
   return (
     <main className="min-h-svh bg-[radial-gradient(circle_at_top,rgba(196,30,47,0.08),transparent_30%),linear-gradient(180deg,#fffdf9,#f8f0e7)] px-4 py-5 text-neutral-950 sm:px-6 sm:py-8">
-      <div className="mx-auto min-h-[calc(100svh-40px)] w-full max-w-[460px] rounded-[28px] border border-black/8 bg-[#fffdf9]/92 px-4 py-5 shadow-[0_24px_70px_rgba(16,16,16,0.1)] backdrop-blur sm:px-5">
+      <div className="mx-auto w-full max-w-[460px] overflow-hidden rounded-[28px] border border-black/8 bg-[#fffdf9]/92 px-4 py-5 shadow-[0_24px_70px_rgba(16,16,16,0.1)] backdrop-blur sm:px-5">
         <header className="ig-rise text-center">
           <Image
             src={logoMedia.src}
@@ -182,36 +181,7 @@ export default function InstagramLinksPage() {
           </p>
         </header>
 
-        <section
-          className="ig-rise mt-5 grid h-[210px] grid-cols-3 grid-rows-2 gap-2"
-          style={{ "--ig-delay": "90ms" } as React.CSSProperties}
-          aria-label="Ambiente e pratos do Torii"
-        >
-          {showcaseMedia.map((item, index) => (
-            <figure
-              key={item.src}
-              className={`relative overflow-hidden rounded-[20px] bg-neutral-950 shadow-[0_12px_28px_rgba(16,16,16,0.1)] ${item.className}`}
-            >
-              <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                priority={item.priority}
-                quality={88}
-                sizes={
-                  index === 0
-                    ? "(max-width: 480px) 64vw, 300px"
-                    : "(max-width: 480px) 30vw, 140px"
-                }
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/34 via-transparent to-transparent" />
-              <figcaption className="absolute bottom-2 left-2 rounded-full bg-white/90 px-2.5 py-1 text-[0.65rem] font-black uppercase tracking-wide text-neutral-950">
-                {item.label}
-              </figcaption>
-            </figure>
-          ))}
-        </section>
+        <InstagramMediaMarquee media={instagramGalleryMedia} />
 
         <nav className="mt-5 grid gap-3" aria-label="Links principais">
           <LinkButton
@@ -231,18 +201,18 @@ export default function InstagramLinksPage() {
           <LinkButton href={GOOGLE_MAPS_URL} icon={<IconRoute />} delay={360}>
             Ver localização
           </LinkButton>
-          <LinkButton
-            href={FULL_SITE_URL}
-            icon={<IconArrow />}
-            delay={430}
-            external={false}
-          >
+          <LinkButton href={FULL_SITE_URL} icon={<IconArrow />} delay={430}>
             Acessar site completo
           </LinkButton>
           <LinkButton href={INSTAGRAM_URL} icon={<IconCamera />} delay={500}>
             Instagram
           </LinkButton>
         </nav>
+
+        <InstagramVideoMoment
+          videoSrc={scrollExperienceMedia.mobileVideo}
+          posterSrc={foodGalleryMedia[19].src}
+        />
 
         <section
           className="ig-rise mt-5 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.04)]"
@@ -256,7 +226,7 @@ export default function InstagramLinksPage() {
             {nightChoices.map((choice) => (
               <span
                 key={choice}
-                className="rounded-full border border-[#eaded4] bg-[#fff8f1] px-3 py-2 text-xs font-black text-neutral-850"
+                className="rounded-full border border-[#eaded4] bg-[#fff8f1] px-3 py-2 text-xs font-black text-neutral-800"
               >
                 {choice}
               </span>
@@ -264,12 +234,54 @@ export default function InstagramLinksPage() {
           </div>
         </section>
 
+        <InstagramTestimonialsMarquee reviews={toriiReviews} />
+
         <section
-          className="ig-rise mt-4 rounded-[22px] bg-neutral-950 p-4 text-white shadow-[0_14px_34px_rgba(16,16,16,0.12)]"
+          className="ig-rise mt-5 rounded-[24px] bg-neutral-950 p-4 text-white shadow-[0_14px_34px_rgba(16,16,16,0.12)]"
           style={{ "--ig-delay": "640ms" } as React.CSSProperties}
         >
+          <h2 className="text-2xl font-black leading-tight">
+            Reserve sua noite no Torii.
+          </h2>
+          <div className="mt-4 grid gap-2">
+            <a
+              href={whatsappLinks.reservation}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--torii-red)] text-sm font-black text-white active:scale-[0.985]"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Reservar pelo WhatsApp
+            </a>
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href={whatsappLinks.delivery}
+                target="_blank"
+                rel="noreferrer"
+                className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-white text-sm font-black text-neutral-950 active:scale-[0.985]"
+              >
+                <IconBag />
+                Delivery
+              </a>
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-white text-sm font-black text-neutral-950 active:scale-[0.985]"
+              >
+                <IconRoute />
+                Abrir rota
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="ig-rise mt-4 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.04)]"
+          style={{ "--ig-delay": "700ms" } as React.CSSProperties}
+        >
           <h2 className="text-lg font-black">Estamos em Araguaína</h2>
-          <div className="mt-3 space-y-2 text-sm font-bold leading-6 text-white/74">
+          <div className="mt-3 space-y-2 text-sm font-bold leading-6 text-neutral-600">
             <p>{ADDRESS}</p>
             <p>{OPENING_HOURS}</p>
           </div>
@@ -278,7 +290,7 @@ export default function InstagramLinksPage() {
               href={GOOGLE_MAPS_URL}
               target="_blank"
               rel="noreferrer"
-              className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-white text-sm font-black text-neutral-950 active:scale-[0.985]"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-neutral-950 text-sm font-black text-white active:scale-[0.985]"
             >
               <IconRoute />
               Abrir rota
@@ -290,32 +302,13 @@ export default function InstagramLinksPage() {
               className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--torii-red)] text-sm font-black text-white active:scale-[0.985]"
             >
               <WhatsAppIcon className="h-4 w-4" />
-              Reservar mesa
+              Reservar
             </a>
           </div>
         </section>
 
-        <section
-          className="ig-rise mt-4 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.04)]"
-          style={{ "--ig-delay": "710ms" } as React.CSSProperties}
-        >
-          <p className="text-xl font-black text-[var(--torii-red)]">
-            4,4 no Google
-          </p>
-          <p className="mt-1 text-sm font-black text-neutral-950">
-            com 382 avaliações.
-          </p>
-          <p className="mt-2 text-sm font-bold leading-6 text-neutral-600">
-            Clientes destacam comida bem servida, ambiente agradável e
-            atendimento à noite.
-          </p>
-        </section>
-
         <footer className="ig-rise mt-5 pb-1 text-center text-xs font-black text-neutral-500">
           <p>Torii Japanese Food · Araguaína - TO</p>
-          <a href={FULL_SITE_URL} className="mt-2 inline-flex text-[var(--torii-red)]">
-            Site completo
-          </a>
         </footer>
       </div>
     </main>

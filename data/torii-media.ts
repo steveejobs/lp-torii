@@ -15,21 +15,13 @@ export const facadeMedia = {
   alt: "Fachada preta do Torii Restaurante Japones a noite",
 } satisfies ToriiMediaAsset;
 
-export const environmentMedia = [
-  {
-    // ambiente-interno-torii.png - usado em HeroInteractiveIntro e Ambiente. Nao usar em outro lugar.
-    src: "/torii/ambiente-interno-torii.png",
-    alt: "Salao interno do Torii com madeira, balcao preto e luz quente",
-  },
-] satisfies ToriiMediaAsset[];
+export const homeHeroImage = {
+  // Uso exclusivo: primeira hero / Home 1. Nao usar em outras secoes.
+  src: "/torii/ambiente-interno-torii.png",
+  alt: "Ambiente interno do Torii com bandeiras vermelhas e luz quente",
+} satisfies ToriiMediaAsset;
 
-export const heroMedia = [
-  {
-    // ambiente-interno-torii.png - uso 1 de 2 do ambiente interno no site.
-    src: "/torii/ambiente-interno-torii.png",
-    alt: "Ambiente interno do Torii com luz quente e balcao iluminado",
-  },
-] satisfies ToriiMediaAsset[];
+export const heroMedia = [homeHeroImage] satisfies ToriiMediaAsset[];
 
 export const scrollExperienceMedia = {
   // scroll-experience-bg.jpg - usado apenas como fundo da experiencia de scroll.

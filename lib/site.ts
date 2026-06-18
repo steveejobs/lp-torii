@@ -1,7 +1,7 @@
 import {
   facadeMedia,
   foodGalleryMedia,
-  heroMedia,
+  homeHeroImage,
   locationMedia,
   logoMedia,
   scrollExperienceMedia,
@@ -51,8 +51,7 @@ export const navLinks = [
 export const images = {
   logo: logoMedia.src,
   fachada: facadeMedia.src,
-  ambienteInterno: heroMedia[0].src,
-  heroIntro: heroMedia[0].src,
+  heroIntro: homeHeroImage.src,
   foodGallery: foodGalleryMedia.map((item) => item.src),
   scrollExperienceBg: scrollExperienceMedia.background.src,
   scrollMainVideo: scrollExperienceMedia.video,

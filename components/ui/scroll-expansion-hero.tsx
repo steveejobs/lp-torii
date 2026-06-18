@@ -64,7 +64,6 @@ export default function ScrollExpandMedia({
   const reducedMotionRef = useRef(false);
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -74,7 +73,6 @@ export default function ScrollExpandMedia({
     const syncMedia = () => {
       mobileRef.current = mobileQuery.matches;
       reducedMotionRef.current = reducedQuery.matches;
-      setIsMobile(mobileRef.current);
       setReducedMotion(reducedMotionRef.current);
       if (mobileRef.current || reducedMotionRef.current) setProgress(0);
     };
@@ -153,29 +151,27 @@ export default function ScrollExpandMedia({
     } else {
       video.pause();
     }
-  }, [isVisible, reducedMotion, isMobile]);
+  }, [isVisible, reducedMotion]);
 
-  const activeMediaSrc = isMobile && mobileMediaSrc ? mobileMediaSrc : mediaSrc;
-  const activePosterSrc =
-    isMobile && mobilePosterSrc ? mobilePosterSrc : posterSrc;
+  const activeMediaSrc = mobileMediaSrc ?? mediaSrc;
+  const activePosterSrc = mobilePosterSrc ?? posterSrc;
   const expansionProgress = reducedMotion
     ? 0
-    : easeOutCubic(mapRange(progress, 0.08, 0.88, 0, 1));
+    : easeOutCubic(mapRange(progress, 0.08, 0.92, 0, 1));
   const textFadeProgress = reducedMotion
     ? 0
     : easeOutCubic(mapRange(progress, 0.08, 0.45, 0, 1));
-  const textOpacity = isMobile ? 1 : 1 - textFadeProgress;
+  const textOpacity = 1 - textFadeProgress;
 
   const backgroundStyle: CSSProperties = {
-    transform:
-      !isMobile && !reducedMotion
-        ? `translate3d(0, ${lerp(0, -14, expansionProgress)}px, 0) scale(${lerp(
-            1.035,
-            1.01,
-            expansionProgress,
-          )})`
-        : undefined,
-    willChange: !isMobile && !reducedMotion ? "transform" : undefined,
+    transform: !reducedMotion
+      ? `translate3d(0, ${lerp(0, -14, expansionProgress)}px, 0) scale(${lerp(
+          1.035,
+          1.01,
+          expansionProgress,
+        )})`
+      : undefined,
+    willChange: !reducedMotion ? "transform" : undefined,
   };
 
   const desktopCardStyle: CSSProperties = {
@@ -188,27 +184,86 @@ export default function ScrollExpandMedia({
   };
 
   const mobileCardStyle: CSSProperties = {
-    width: isVisible ? "min(92vw, 420px)" : "min(86vw, 390px)",
-    height: isVisible ? "min(64svh, 560px)" : "min(58svh, 520px)",
+    width: "min(92vw, 420px)",
+    height: "min(64svh, 560px)",
     borderRadius: "26px",
     boxShadow: "0 22px 58px rgba(0,0,0,0.24)",
-    opacity: isVisible ? 1 : 0,
-    transform: isVisible
-      ? "translate3d(0, 0, 0) scale(1)"
-      : "translate3d(0, 18px, 0) scale(0.96)",
+    opacity: 1,
+    transform: "translate3d(0, 0, 0) scale(1)",
   };
 
-  const cardStyle = isMobile ? mobileCardStyle : desktopCardStyle;
   const sectionClassName = reducedMotion
-    ? "relative isolate overflow-clip bg-[#fffdf9]"
-    : "relative isolate overflow-clip bg-[#fffdf9] md:h-[150svh] lg:h-[160svh] xl:h-[170svh]";
-  const stageClassName = reducedMotion
-    ? "relative flex min-h-[92svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-16 md:min-h-svh md:py-0"
-    : "relative flex min-h-[92svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-16 md:sticky md:top-0 md:h-svh md:min-h-0 md:gap-0 md:p-0";
+    ? "relative isolate hidden h-svh overflow-clip bg-[#fffdf9] md:block"
+    : "relative isolate hidden h-[145svh] overflow-clip bg-[#fffdf9] md:block lg:h-[155svh]";
 
   return (
-    <section ref={sectionRef} className={sectionClassName} aria-label={title}>
-      <div className={stageClassName}>
+    <>
+      <section ref={sectionRef} className={sectionClassName} aria-label={title}>
+        <div className="sticky top-0 h-svh overflow-hidden">
+          <Image
+            src={bgImageSrc}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-[54%_50%] opacity-100"
+            priority={false}
+            style={backgroundStyle}
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.1)_42%,rgba(0,0,0,0.26))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.04),transparent_58%)]" />
+
+          <div
+            className="absolute left-1/2 top-[11svh] z-20 w-[min(calc(100%_-_32px),1180px)] max-w-[1180px] -translate-x-1/2 text-white"
+            style={{
+              opacity: textOpacity,
+              transform: `translate3d(-50%, ${lerp(
+                0,
+                -18,
+                textFadeProgress,
+              )}px, 0)`,
+              pointerEvents: textOpacity < 0.08 ? "none" : undefined,
+            }}
+          >
+            <div className="max-w-[460px]">
+              <p className="text-xs font-black uppercase text-white/78">
+                {date}
+              </p>
+              <h2 className="mt-3 text-5xl font-black leading-[1.02]">
+                {title}
+              </h2>
+              <p className="mt-4 max-w-[390px] text-base font-bold leading-7 text-white/78">
+                {scrollToExpand}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="absolute left-1/2 top-1/2 z-10 overflow-hidden border border-white/20 bg-neutral-950 shadow-[0_28px_75px_rgba(0,0,0,0.3)]"
+            style={desktopCardStyle}
+          >
+            <video
+              key={mediaSrc}
+              ref={videoRef}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={posterSrc}
+              className="h-full w-full object-cover"
+              controls={false}
+              disablePictureInPicture
+            >
+              <source src={mediaSrc} type="video/mp4" />
+            </video>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/14 to-transparent" />
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="relative isolate block overflow-hidden bg-[#fffdf9] px-4 py-14 md:hidden"
+        aria-label={title}
+      >
         <Image
           src={bgImageSrc}
           alt=""
@@ -216,26 +271,14 @@ export default function ScrollExpandMedia({
           sizes="100vw"
           className="object-cover object-[54%_50%] opacity-100"
           priority={false}
-          style={backgroundStyle}
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.1)_42%,rgba(0,0,0,0.26))]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.04),transparent_58%)]" />
 
-        <div
-          className="relative z-20 w-full max-w-[520px] text-white md:absolute md:left-1/2 md:top-[11svh] md:w-[min(calc(100%_-_32px),1180px)] md:max-w-[1180px] md:-translate-x-1/2"
-          style={{
-            opacity: textOpacity,
-            transform: isMobile
-              ? undefined
-              : `translate3d(-50%, ${lerp(0, -18, textFadeProgress)}px, 0)`,
-            pointerEvents: textOpacity < 0.08 ? "none" : undefined,
-          }}
-        >
+        <div className="relative z-20 mx-auto w-full max-w-[520px] text-white">
           <div className="max-w-[460px]">
             <p className="text-xs font-black uppercase text-white/78">{date}</p>
-            <h2 className="mt-3 text-3xl font-black leading-[1.02] md:text-5xl">
-              {title}
-            </h2>
+            <h2 className="mt-3 text-3xl font-black leading-[1.02]">{title}</h2>
             <p className="mt-4 max-w-[390px] text-base font-bold leading-7 text-white/78">
               {scrollToExpand}
             </p>
@@ -243,26 +286,26 @@ export default function ScrollExpandMedia({
         </div>
 
         <div
-          className="relative z-10 mx-auto overflow-hidden border border-white/20 bg-neutral-950 shadow-[0_28px_75px_rgba(0,0,0,0.3)] transition-[opacity,transform,width,height] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:absolute md:left-1/2 md:top-1/2 md:mx-0 md:transition-none"
-          style={cardStyle}
+          className="relative z-10 mx-auto mt-8 overflow-hidden border border-white/20 bg-neutral-950 shadow-[0_28px_75px_rgba(0,0,0,0.3)] transition-[opacity,transform,width,height] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          style={mobileCardStyle}
         >
           <video
             key={activeMediaSrc}
-            ref={videoRef}
             muted
             loop
             playsInline
             preload="metadata"
             poster={activePosterSrc}
+            autoPlay
             className="h-full w-full object-cover"
             controls={false}
             disablePictureInPicture
           >
             <source src={activeMediaSrc} type="video/mp4" />
           </video>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/14 to-transparent md:h-28" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/14 to-transparent" />
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -195,16 +195,15 @@ export default function Home() {
               threshold={0.22}
               className="mt-9 grid gap-4 md:grid-cols-[0.92fr_1.08fr]"
             >
-              <div className="image-soft aspect-[4/5] md:min-h-[620px]">
-                <Image
-                  src={images.ambienteInterno}
-                  alt="Salão interno do Torii com balcão iluminado"
-                  width={1122}
-                  height={1402}
-                  sizes="(max-width: 768px) 92vw, 46vw"
-                  loading="lazy"
-                  className="h-full w-full object-cover object-center"
-                />
+              <div className="rounded-lg border border-black/10 bg-[#fffaf4] p-7 md:min-h-[620px] md:p-9">
+                <div className="h-px w-20 bg-[var(--torii-red)]" />
+                <p className="mt-8 max-w-sm text-4xl font-black leading-[1.02] text-neutral-950 md:text-5xl">
+                  Ambiente quente, contraste preto e ritmo de jantar.
+                </p>
+                <p className="mt-5 max-w-md text-base font-bold leading-7 text-neutral-600 md:text-lg">
+                  Madeira, luz baixa e atendimento direto para jantar com
+                  calma, seja em casal, familia ou grupo.
+                </p>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-1">
                 <div className="image-soft aspect-[16/9] md:aspect-[16/10]">

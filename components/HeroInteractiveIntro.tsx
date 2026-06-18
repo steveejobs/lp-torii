@@ -115,7 +115,7 @@ export function HeroInteractiveIntro() {
             priority
             quality={92}
             sizes="(max-width: 768px) 100vw, 1180px"
-            className="absolute inset-0 object-cover object-[54%_50%] opacity-100 md:object-[58%_48%]"
+            className="absolute inset-0 object-cover object-[58%_38%] opacity-100 md:object-[60%_38%]"
           />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.08)_48%,rgba(0,0,0,0.36)_100%)] md:bg-[linear-gradient(90deg,rgba(0,0,0,0.34)_0%,rgba(0,0,0,0.13)_38%,rgba(0,0,0,0.02)_100%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(196,30,47,0.08),transparent_44%)]" />
