@@ -1,41 +1,65 @@
-export const WHATSAPP_NUMBER = "5563999999999";
-export const ADDRESS = "Endereço editável, Araguaína - TO";
+export const WHATSAPP_NUMBER = "5563992374088";
+export const ADDRESS = "Torii Restaurante Japonês, Araguaína - TO";
 export const GOOGLE_MAPS_URL =
-  "https://www.google.com/maps/search/?api=1&query=-7.192650,-48.204716";
-export const INSTAGRAM_URL = "https://www.instagram.com/torii";
+  "https://maps.app.goo.gl/CgjYuo1yPmZVKJbz7";
+export const INSTAGRAM_URL =
+  "https://www.instagram.com/toriirestaurantejapones/";
 export const OPENING_HOURS = "Horário editável: terça a domingo, à noite";
 
 export function buildWhatsappLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  return `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0&utm_source=ig`;
 }
 
 export const whatsappMessages = {
-  reservation:
-    "Olá, Torii! Quero reservar uma mesa para o rodízio. Podem me passar os horários disponíveis?",
+  headerReservation:
+    "Olá, Torii! Vim pelo site e quero reservar uma mesa. Podem me passar os horários disponíveis?",
+  heroReservation:
+    "Olá, Torii! Vim pelo site e quero reservar pelo WhatsApp para jantar no restaurante.",
   rodizio:
-    "Olá, Torii! Quero reservar uma mesa para o rodízio no salão.",
+    "Olá, Torii! Quero reservar uma mesa para o rodízio no salão. Podem me informar os horários?",
+  rodizioSection:
+    "Olá, Torii! Quero reservar uma mesa para o rodízio à noite. Podem verificar disponibilidade?",
   delivery:
-    "Olá, Torii! Quero fazer um pedido para delivery. Podem me enviar as opções?",
+    "Olá, Torii! Quero fazer um pedido para delivery. Podem me enviar o cardápio e as opções?",
   pickup:
-    "Olá, Torii! Quero fazer um pedido para retirada no restaurante.",
+    "Olá, Torii! Quero fazer um pedido para retirada no restaurante. Podem me orientar?",
+  locationReservation:
+    "Olá, Torii! Estou vendo a localização no site e quero reservar uma mesa antes de sair.",
   location:
-    "Olá, Torii! Quero confirmar o endereço e horário de funcionamento."
+    "Olá, Torii! Quero confirmar o endereço e o horário de funcionamento.",
+  footer:
+    "Olá, Torii! Vim pelo site e quero falar com a equipe pelo WhatsApp.",
 };
 
 export const navLinks = [
   { label: "Experiências", href: "#experiencias" },
   { label: "Ambiente", href: "#ambiente" },
   { label: "Destaques", href: "#destaques" },
-  { label: "Localização", href: "#localizacao" }
+  { label: "Localização", href: "#localizacao" },
 ];
 
 export const images = {
-  logo: "/torii/logo.png",
-  ambiente1: "/torii/ambiente-1.jpg",
-  ambiente2: "/torii/ambiente-2.jpg",
-  ambiente3: "/torii/ambiente-3.jpg",
-  fachada: "/torii/fachada.jpg",
-  prato1: "/torii/prato-1.jpg",
-  prato2: "/torii/prato-2.jpg",
-  prato3: "/torii/prato-3.jpg"
+  logo: "/favicon%20torii/logo%20torii.png",
+  fachada: "/torii/fachada-torii.png",
+  ambienteInterno: "/torii/ambiente-interno-torii.png",
+  pratoSushi01: "/torii/prato-sushi-01.png",
+  pratoSushi02: "/torii/prato-sushi-02.png",
+  pratoSushi03: "/torii/prato-sushi-03.png",
+  pratoSushi04: "/torii/prato-sushi-04.png",
+  pratoSushi05: "/torii/prato-sushi-05.png",
+  pratoSushi06: "/torii/prato-sushi-06.png",
+  pratoSushi07: "/torii/prato-sushi-07.png",
+  pratoSushi08: "/torii/prato-sushi-08.png",
+  pratoSushi09: "/torii/prato-sushi-09.png",
+  scrollExperienceBg: "/torii/scroll-experience-bg.jpg",
+  scrollExperienceMobile01: "/torii/scroll-experience-mobile-01.jpg",
+  scrollExperienceMobile02: "/torii/scroll-experience-mobile-02.jpg",
+  scrollExperienceVideo: "/torii/scroll-experience-video.mp4",
+  scrollExperienceVideoMobile: "/torii/scroll-experience-video-mobile.mp4",
+  ambiente1: "/torii/ambiente-interno-torii.png",
+  ambiente2: "/torii/fachada-torii.png",
+  ambiente3: "/torii/prato-sushi-06.png",
+  prato1: "/torii/prato-sushi-01.png",
+  prato2: "/torii/prato-sushi-02.png",
+  prato3: "/torii/prato-sushi-03.png",
 };

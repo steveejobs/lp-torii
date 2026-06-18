@@ -19,6 +19,12 @@ html {
   background: var(--background);
 }
 
+@media (min-width: 1024px) {
+  html {
+    font-size: 90%;
+  }
+}
+
 body {
   margin: 0;
   overflow-x: hidden;
@@ -26,10 +32,7 @@ body {
     linear-gradient(180deg, rgba(255, 253, 249, 0.96), rgba(255, 253, 249, 1)),
     var(--background);
   color: var(--foreground);
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   text-rendering: optimizeLegibility;
 }
 
@@ -126,6 +129,83 @@ img {
   .fine-border {
     border: 1px solid rgba(16, 16, 16, 0.1);
   }
+
+  .in-view-reveal {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.98);
+    clip-path: inset(0 0 8% 0);
+    transition:
+      opacity 680ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+      clip-path 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform, clip-path;
+  }
+
+  .in-view-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.intro-stage {
+  --x: 58%;
+  --y: 44%;
+}
+
+.intro-stage::after {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(
+      circle at var(--x) var(--y),
+      rgba(196, 30, 47, 0.1),
+      transparent 22%
+    ),
+    linear-gradient(180deg, rgba(16, 16, 16, 0.02), transparent 45%);
+}
+
+.intro-sun {
+  left: calc(var(--x) - 56px);
+  top: calc(var(--y) - 56px);
+  transform: translate3d(0, 0, 0);
+  transition: opacity 240ms ease;
+}
+
+.intro-line {
+  transform: translate3d(0, 0, 0) scaleX(1);
+  transform-origin: left;
+}
+
+.intro-line-a {
+  left: calc(var(--x) - 76px);
+  top: calc(var(--y) + 8px);
+}
+
+.intro-line-b {
+  left: calc(var(--x) - 22px);
+  top: calc(var(--y) + 42px);
+}
+
+@media (min-width: 768px) {
+  .intro-sun {
+    left: calc(var(--x) - 88px);
+    top: calc(var(--y) - 88px);
+  }
+
+  .intro-line-a {
+    left: calc(var(--x) - 132px);
+    top: calc(var(--y) + 10px);
+  }
+
+  .intro-line-b {
+    left: calc(var(--x) - 22px);
+    top: calc(var(--y) + 58px);
+  }
 }
 
 @keyframes heroClipA {
@@ -214,6 +294,12 @@ img {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 1ms !important;
+  }
+
+  .in-view-reveal {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
   }
 }
 

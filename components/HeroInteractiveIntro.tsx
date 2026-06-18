@@ -1,0 +1,164 @@
+"use client";
+
+import Image from "next/image";
+import { useCallback, useEffect, useRef } from "react";
+import InkReveal from "@/components/ui/ink-reveal";
+import { images } from "@/lib/site";
+
+type IntroStyle = React.CSSProperties & {
+  "--x": string;
+  "--y": string;
+};
+
+export function HeroInteractiveIntro() {
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const frameRef = useRef<number | null>(null);
+  const pointerRef = useRef<{ x: number; y: number } | null>(null);
+  const rectRef = useRef<DOMRect | null>(null);
+
+  const setVars = useCallback((x: number, y: number) => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    stage.style.setProperty("--x", `${x}%`);
+    stage.style.setProperty("--y", `${y}%`);
+  }, []);
+
+  const flushPointer = useCallback(() => {
+    frameRef.current = null;
+    const stage = stageRef.current;
+    const pointer = pointerRef.current;
+    if (!stage || !pointer) return;
+    const rect = rectRef.current ?? stage.getBoundingClientRect();
+    setVars(
+      ((pointer.x - rect.left) / rect.width) * 100,
+      ((pointer.y - rect.top) / rect.height) * 100,
+    );
+  }, [setVars]);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const mobileQuery = window.matchMedia("(max-width: 767px)");
+    const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = 0;
+    let visible = false;
+    let started = 0;
+
+    const animateMobile = (time: number) => {
+      if (!visible || !mobileQuery.matches || reducedQuery.matches) {
+        frame = 0;
+        return;
+      }
+      if (!started) started = time;
+      const t = (time - started) / 1000;
+      const x = 50 + Math.sin(t * 0.72) * 22;
+      const y = 45 + Math.sin(t * 0.96 + 0.7) * 10;
+      setVars(x, y);
+      frame = requestAnimationFrame(animateMobile);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (reducedQuery.matches) {
+          setVars(58, 44);
+          return;
+        }
+        if (visible && mobileQuery.matches && !frame) {
+          started = 0;
+          frame = requestAnimationFrame(animateMobile);
+        }
+      },
+      { threshold: 0.45 },
+    );
+
+    observer.observe(stage);
+    rectRef.current = stage.getBoundingClientRect();
+
+    const cacheRect = () => {
+      rectRef.current = stage.getBoundingClientRect();
+    };
+    window.addEventListener("resize", cacheRect);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", cacheRect);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [setVars]);
+
+  return (
+    <section className="bg-[#fffdf9] pt-6 md:pt-8" aria-label="Abertura Torii">
+      <div className="container-page">
+        <div
+          ref={stageRef}
+          className="intro-stage relative isolate h-[340px] overflow-hidden rounded-lg border border-black/10 bg-[#fffdf9] shadow-[0_26px_70px_rgba(16,16,16,0.08)] md:h-[440px]"
+          style={{ "--x": "58%", "--y": "44%" } as IntroStyle}
+          onMouseMove={(event) => {
+            pointerRef.current = { x: event.clientX, y: event.clientY };
+            if (frameRef.current === null) {
+              frameRef.current = requestAnimationFrame(flushPointer);
+            }
+          }}
+          onMouseEnter={(event) => {
+            rectRef.current = event.currentTarget.getBoundingClientRect();
+          }}
+          onMouseLeave={() => {
+            pointerRef.current = null;
+          }}
+        >
+          <Image
+            src={images.ambiente1}
+            alt="Ambiente do Torii Restaurante Japonês"
+            fill
+            priority
+            sizes="(max-width: 768px) 92vw, 1180px"
+            className="absolute inset-0 object-cover opacity-95"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,253,249,0.98)_0%,rgba(255,253,249,0.72)_42%,rgba(255,253,249,0.22)_100%)]" />
+          <InkReveal
+            maskColor={[255, 253, 249]}
+            brushSize={150}
+            lifetime={780}
+            stampStep={14}
+            maxStamps={160}
+            className="hidden md:block"
+            autoMobile={false}
+          />
+          <InkReveal
+            maskColor={[255, 253, 249]}
+            brushSize={118}
+            lifetime={900}
+            stampStep={18}
+            maxStamps={90}
+            className="md:hidden"
+          />
+
+          <div className="pointer-events-none absolute inset-0 z-20">
+            <div className="intro-sun absolute h-28 w-28 rounded-full bg-[var(--torii-red)] opacity-95 shadow-[0_22px_58px_rgba(196,30,47,0.22)] md:h-44 md:w-44" />
+            <div className="intro-line intro-line-a absolute h-px w-40 bg-black/80 md:w-72" />
+            <div className="intro-line intro-line-b absolute h-px w-28 bg-black/50 md:w-52" />
+          </div>
+
+          <div className="relative z-30 flex h-full max-w-[520px] flex-col justify-end p-6 md:p-10">
+            <Image
+              src={images.logo}
+              alt="Torii Restaurante Japonês"
+              width={170}
+              height={74}
+              priority
+              className="mb-5 h-auto w-[128px] md:w-[170px]"
+            />
+            <p className="max-w-sm text-sm font-black uppercase tracking-[0.08em] text-[var(--torii-red)]">
+              Rodízio, delivery e retirada
+            </p>
+            <p className="mt-3 max-w-md text-2xl font-black leading-[1.05] text-neutral-950 md:text-4xl">
+              Uma abertura leve para a noite japonesa em Araguaína.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
