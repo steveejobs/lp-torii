@@ -4,8 +4,8 @@ export type ToriiMediaAsset = {
 };
 
 export const logoMedia = {
-  // logo torii.png - usado apenas em Header, Hero e Footer. Nao usar como foto de secao.
-  src: "/favicon%20torii/logo%20torii.png",
+  // logo-torii.png - usado apenas como marca. Nao usar como foto de secao.
+  src: "/torii/logo-torii.png",
   alt: "Torii Restaurante Japones",
 } satisfies ToriiMediaAsset;
 

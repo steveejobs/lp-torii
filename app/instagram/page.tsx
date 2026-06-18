@@ -1,0 +1,323 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import {
+  ADDRESS,
+  FULL_SITE_URL,
+  GOOGLE_MAPS_URL,
+  INSTAGRAM_URL,
+  OPENING_HOURS,
+  createWhatsAppLink,
+} from "@/lib/site";
+import { environmentMedia, foodGalleryMedia, logoMedia } from "@/data/torii-media";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(FULL_SITE_URL),
+  title: "Torii Japanese Food | Links",
+  description:
+    "Reserve sua mesa, peça delivery ou veja a localização do Torii Japanese Food em Araguaína.",
+  openGraph: {
+    title: "Torii Japanese Food | Links",
+    description:
+      "Reserve sua mesa, peça delivery ou veja a localização do Torii Japanese Food em Araguaína.",
+    url: "/instagram",
+    images: [
+      {
+        url: logoMedia.src,
+        width: 512,
+        height: 512,
+        alt: "Torii Japanese Food",
+      },
+    ],
+  },
+};
+
+const whatsappLinks = {
+  reservation: createWhatsAppLink(
+    "Olá, vim pelo Instagram e quero reservar uma mesa no Torii.",
+  ),
+  delivery: createWhatsAppLink(
+    "Olá, vim pelo Instagram e quero fazer um pedido para delivery.",
+  ),
+  pickup: createWhatsAppLink(
+    "Olá, vim pelo Instagram e quero fazer um pedido para retirada.",
+  ),
+};
+
+const showcaseMedia = [
+  {
+    ...foodGalleryMedia[9],
+    label: "Cozinha",
+    className: "col-span-2 row-span-2",
+    priority: true,
+  },
+  {
+    ...environmentMedia[0],
+    label: "Ambiente",
+    className: "",
+    priority: false,
+  },
+  {
+    ...foodGalleryMedia[14],
+    label: "Noite",
+    className: "",
+    priority: false,
+  },
+];
+
+const nightChoices = ["Rodízio à noite", "Delivery", "Retirada"];
+
+function IconRoute() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+      <path
+        d="M12 21s7-5.35 7-12A7 7 0 0 0 5 9c0 6.65 7 12 7 12Zm0-9.4A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function IconArrow() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+      <path
+        d="M13.2 5.25 20 12l-6.8 6.75-1.35-1.35 4.45-4.45H4v-1.9h12.3L11.85 6.6l1.35-1.35Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function IconCamera() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+      <path
+        d="M7.25 3.5h9.5A3.76 3.76 0 0 1 20.5 7.25v9.5a3.76 3.76 0 0 1-3.75 3.75h-9.5a3.76 3.76 0 0 1-3.75-3.75v-9.5A3.76 3.76 0 0 1 7.25 3.5Zm0 1.8A1.96 1.96 0 0 0 5.3 7.25v9.5a1.96 1.96 0 0 0 1.95 1.95h9.5a1.96 1.96 0 0 0 1.95-1.95v-9.5a1.96 1.96 0 0 0-1.95-1.95h-9.5Zm4.75 3.15a3.55 3.55 0 1 1 0 7.1 3.55 3.55 0 0 1 0-7.1Zm0 1.8a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Zm4.15-2.55a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function IconBag() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
+      <path
+        d="M7.2 8V6.9a4.8 4.8 0 0 1 9.6 0V8h2.05l.85 12H4.3l.85-12H7.2Zm1.9 0h5.8V6.9a2.9 2.9 0 0 0-5.8 0V8Zm-2.18 1.8-.59 8.4h11.34l-.59-8.4H16.8v2.05h-1.9V9.8H9.1v2.05H7.2V9.8h-.28Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function LinkButton({
+  href,
+  children,
+  icon,
+  primary = false,
+  delay,
+  external = true,
+}: {
+  href: string;
+  children: React.ReactNode;
+  icon: React.ReactNode;
+  primary?: boolean;
+  delay: number;
+  external?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noreferrer" : undefined}
+      className={`ig-rise flex min-h-[56px] items-center justify-between gap-4 rounded-[18px] border px-5 text-[0.95rem] font-black transition active:scale-[0.985] ${
+        primary
+          ? "border-neutral-950 bg-neutral-950 text-white shadow-[0_16px_34px_rgba(16,16,16,0.16)]"
+          : "border-black/10 bg-white text-neutral-950 shadow-[0_10px_26px_rgba(16,16,16,0.05)]"
+      }`}
+      style={{ "--ig-delay": `${delay}ms` } as React.CSSProperties}
+    >
+      <span className="flex items-center gap-3">
+        <span
+          className={`flex h-9 w-9 items-center justify-center rounded-full ${
+            primary ? "bg-white/12 text-white" : "bg-[#fff4ec] text-[var(--torii-red)]"
+          }`}
+        >
+          {icon}
+        </span>
+        {children}
+      </span>
+      <IconArrow />
+    </a>
+  );
+}
+
+export default function InstagramLinksPage() {
+  return (
+    <main className="min-h-svh bg-[radial-gradient(circle_at_top,rgba(196,30,47,0.08),transparent_30%),linear-gradient(180deg,#fffdf9,#f8f0e7)] px-4 py-5 text-neutral-950 sm:px-6 sm:py-8">
+      <div className="mx-auto min-h-[calc(100svh-40px)] w-full max-w-[460px] rounded-[28px] border border-black/8 bg-[#fffdf9]/92 px-4 py-5 shadow-[0_24px_70px_rgba(16,16,16,0.1)] backdrop-blur sm:px-5">
+        <header className="ig-rise text-center">
+          <Image
+            src={logoMedia.src}
+            alt={logoMedia.alt}
+            width={210}
+            height={82}
+            priority
+            className="mx-auto h-auto w-[172px] object-contain"
+          />
+          <h1 className="mt-4 text-2xl font-black leading-tight">
+            Torii Japanese Food
+          </h1>
+          <p className="mx-auto mt-2 max-w-[19rem] text-[1.68rem] font-black leading-[1.04]">
+            O japonês da sua noite em Araguaína.
+          </p>
+          <p className="mx-auto mt-3 max-w-[20rem] text-sm font-bold leading-6 text-neutral-600">
+            Rodízio, delivery e retirada para aproveitar a noite com comida
+            japonesa.
+          </p>
+          <p className="mt-4 inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-3.5 py-2 text-xs font-black text-neutral-900 shadow-[0_10px_22px_rgba(16,16,16,0.04)]">
+            <span className="mr-2 text-[var(--torii-red)]">★★★★★</span>
+            4,4 no Google · 382 avaliações
+          </p>
+        </header>
+
+        <section
+          className="ig-rise mt-5 grid h-[210px] grid-cols-3 grid-rows-2 gap-2"
+          style={{ "--ig-delay": "90ms" } as React.CSSProperties}
+          aria-label="Ambiente e pratos do Torii"
+        >
+          {showcaseMedia.map((item, index) => (
+            <figure
+              key={item.src}
+              className={`relative overflow-hidden rounded-[20px] bg-neutral-950 shadow-[0_12px_28px_rgba(16,16,16,0.1)] ${item.className}`}
+            >
+              <Image
+                src={item.src}
+                alt={item.alt}
+                fill
+                priority={item.priority}
+                quality={88}
+                sizes={
+                  index === 0
+                    ? "(max-width: 480px) 64vw, 300px"
+                    : "(max-width: 480px) 30vw, 140px"
+                }
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/34 via-transparent to-transparent" />
+              <figcaption className="absolute bottom-2 left-2 rounded-full bg-white/90 px-2.5 py-1 text-[0.65rem] font-black uppercase tracking-wide text-neutral-950">
+                {item.label}
+              </figcaption>
+            </figure>
+          ))}
+        </section>
+
+        <nav className="mt-5 grid gap-3" aria-label="Links principais">
+          <LinkButton
+            href={whatsappLinks.reservation}
+            icon={<WhatsAppIcon className="h-5 w-5" />}
+            primary
+            delay={150}
+          >
+            Reservar pelo WhatsApp
+          </LinkButton>
+          <LinkButton href={whatsappLinks.delivery} icon={<IconBag />} delay={220}>
+            Pedir delivery
+          </LinkButton>
+          <LinkButton href={whatsappLinks.pickup} icon={<IconBag />} delay={290}>
+            Pedir para retirada
+          </LinkButton>
+          <LinkButton href={GOOGLE_MAPS_URL} icon={<IconRoute />} delay={360}>
+            Ver localização
+          </LinkButton>
+          <LinkButton
+            href={FULL_SITE_URL}
+            icon={<IconArrow />}
+            delay={430}
+            external={false}
+          >
+            Acessar site completo
+          </LinkButton>
+          <LinkButton href={INSTAGRAM_URL} icon={<IconCamera />} delay={500}>
+            Instagram
+          </LinkButton>
+        </nav>
+
+        <section
+          className="ig-rise mt-5 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.04)]"
+          style={{ "--ig-delay": "570ms" } as React.CSSProperties}
+        >
+          <p className="text-sm font-black">Escolha sua noite</p>
+          <p className="mt-1 text-sm font-bold leading-6 text-neutral-600">
+            Escolha como aproveitar o Torii hoje.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {nightChoices.map((choice) => (
+              <span
+                key={choice}
+                className="rounded-full border border-[#eaded4] bg-[#fff8f1] px-3 py-2 text-xs font-black text-neutral-850"
+              >
+                {choice}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        <section
+          className="ig-rise mt-4 rounded-[22px] bg-neutral-950 p-4 text-white shadow-[0_14px_34px_rgba(16,16,16,0.12)]"
+          style={{ "--ig-delay": "640ms" } as React.CSSProperties}
+        >
+          <h2 className="text-lg font-black">Estamos em Araguaína</h2>
+          <div className="mt-3 space-y-2 text-sm font-bold leading-6 text-white/74">
+            <p>{ADDRESS}</p>
+            <p>{OPENING_HOURS}</p>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <a
+              href={GOOGLE_MAPS_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-white text-sm font-black text-neutral-950 active:scale-[0.985]"
+            >
+              <IconRoute />
+              Abrir rota
+            </a>
+            <a
+              href={whatsappLinks.reservation}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--torii-red)] text-sm font-black text-white active:scale-[0.985]"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
+              Reservar mesa
+            </a>
+          </div>
+        </section>
+
+        <section
+          className="ig-rise mt-4 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.04)]"
+          style={{ "--ig-delay": "710ms" } as React.CSSProperties}
+        >
+          <p className="text-xl font-black text-[var(--torii-red)]">
+            4,4 no Google
+          </p>
+          <p className="mt-1 text-sm font-black text-neutral-950">
+            com 382 avaliações.
+          </p>
+          <p className="mt-2 text-sm font-bold leading-6 text-neutral-600">
+            Clientes destacam comida bem servida, ambiente agradável e
+            atendimento à noite.
+          </p>
+        </section>
+
+        <footer className="ig-rise mt-5 pb-1 text-center text-xs font-black text-neutral-500">
+          <p>Torii Japanese Food · Araguaína - TO</p>
+          <a href={FULL_SITE_URL} className="mt-2 inline-flex text-[var(--torii-red)]">
+            Site completo
+          </a>
+        </footer>
+      </div>
+    </main>
+  );
+}
