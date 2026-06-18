@@ -109,22 +109,15 @@ export function HeroInteractiveIntro() {
           }}
         >
           <Image
-            src={images.fachada}
-            alt="Fachada do Torii Restaurante Japonês"
+            src={images.pratoSushi09}
+            alt="Combinado japonês do Torii em mesa de madeira"
             fill
             priority
             sizes="(max-width: 768px) 92vw, 1180px"
-            className="absolute inset-0 object-cover object-[54%_48%] opacity-95 md:hidden"
+            className="absolute inset-0 object-cover object-[44%_52%] opacity-100 md:object-[50%_50%]"
           />
-          <Image
-            src={images.ambienteInterno}
-            alt="Ambiente do Torii Restaurante Japonês"
-            fill
-            priority
-            sizes="(max-width: 768px) 92vw, 1180px"
-            className="absolute inset-0 hidden object-cover object-[52%_50%] opacity-95 md:block"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,249,0.62)_0%,rgba(255,253,249,0.28)_38%,rgba(255,253,249,0.86)_100%)] md:bg-[linear-gradient(90deg,rgba(255,253,249,0.98)_0%,rgba(255,253,249,0.72)_42%,rgba(255,253,249,0.22)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,249,0.18)_0%,rgba(255,253,249,0.08)_42%,rgba(255,253,249,0.72)_100%)] md:bg-[linear-gradient(90deg,rgba(255,253,249,0.84)_0%,rgba(255,253,249,0.46)_38%,rgba(255,253,249,0.08)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(196,30,47,0.08),transparent_42%)]" />
           <InkReveal
             maskColor={[255, 253, 249]}
             brushSize={150}
