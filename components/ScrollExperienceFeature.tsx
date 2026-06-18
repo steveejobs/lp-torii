@@ -6,8 +6,8 @@ import { images } from "@/lib/site";
 export function ScrollExperienceFeature() {
   return (
     <ScrollExpandMedia
-      mediaSrc={images.scrollMainVideo}
-      mobileMediaSrc={images.scrollMainVideo}
+      mediaSrc={images.scrollExperienceVideo}
+      mobileMediaSrc={images.scrollExperienceVideoMobile}
       posterSrc={images.ambienteInterno}
       mobilePosterSrc={images.ambienteInterno}
       bgImageSrc={images.scrollExperienceBg}

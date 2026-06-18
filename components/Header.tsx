@@ -50,16 +50,26 @@ export function Header() {
           Reservar
         </a>
 
-        <a
-          href={buildWhatsappLink(whatsappMessages.headerReservation)}
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--torii-red)] text-white shadow-[0_12px_26px_rgba(196,30,47,0.22)] transition hover:bg-[#a91726]"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Reservar pelo WhatsApp"
-          title="WhatsApp"
-        >
-          <WhatsAppIcon className="h-[18px] w-[18px]" />
-        </a>
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
+          <a
+            href={buildWhatsappLink(whatsappMessages.headerReservation)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-neutral-900 shadow-[0_10px_24px_rgba(16,16,16,0.06)] transition hover:text-[#188f45]"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Falar com o Torii pelo WhatsApp"
+            title="WhatsApp"
+          >
+            <WhatsAppIcon className="h-[18px] w-[18px]" />
+          </a>
+          <a
+            href={buildWhatsappLink(whatsappMessages.headerReservation)}
+            className="btn btn-primary min-h-10 w-auto px-4 text-xs"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Reservar
+          </a>
+        </div>
       </div>
     </header>
   );

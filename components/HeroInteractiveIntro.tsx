@@ -121,27 +121,29 @@ export function HeroInteractiveIntro() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(196,30,47,0.08),transparent_44%)]" />
           <InkReveal
             maskColor={[16, 16, 16]}
-            brushSize={172}
-            lifetime={980}
-            stampStep={14}
-            maxStamps={190}
+            brushSize={210}
+            lifetime={1320}
+            stampStep={12}
+            maxStamps={260}
             gradientStops={[1, 0.82, 0]}
             autoMobile={false}
             autoReveal
-            revealDelay={1180}
-            revealFadeDuration={760}
+            autoRevealPath="horizontal"
+            revealDelay={1580}
+            revealFadeDuration={820}
             className="hidden md:block"
           />
           <InkReveal
             maskColor={[16, 16, 16]}
-            brushSize={128}
-            lifetime={1050}
-            stampStep={18}
-            maxStamps={110}
+            brushSize={150}
+            lifetime={1180}
+            stampStep={16}
+            maxStamps={150}
             gradientStops={[1, 0.84, 0]}
             autoReveal
-            revealDelay={1040}
-            revealFadeDuration={720}
+            autoRevealPath="vertical"
+            revealDelay={1320}
+            revealFadeDuration={760}
             className="md:hidden"
           />
 

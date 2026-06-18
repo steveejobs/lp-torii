@@ -160,7 +160,7 @@ export default function ScrollExpandMedia({
     isMobile && mobilePosterSrc ? mobilePosterSrc : posterSrc;
   const expansionProgress = reducedMotion
     ? 0
-    : easeOutCubic(mapRange(progress, 0.12, 0.78, 0, 1));
+    : easeOutCubic(mapRange(progress, 0.1, 0.82, 0, 1));
   const textFadeProgress = reducedMotion
     ? 0
     : easeOutCubic(mapRange(progress, 0.08, 0.45, 0, 1));
@@ -179,21 +179,19 @@ export default function ScrollExpandMedia({
   };
 
   const desktopCardStyle: CSSProperties = {
-    width: `clamp(280px, ${lerp(32, 44, expansionProgress)}svh, ${lerp(
-      520,
-      680,
-      expansionProgress,
-    )}px)`,
-    height: `clamp(500px, ${lerp(56, 78, expansionProgress)}svh, 780px)`,
-    borderRadius: `${lerp(28, 18, expansionProgress)}px`,
-    boxShadow:
-      `0 34px 90px rgba(0,0,0,${lerp(0.32, 0.2, expansionProgress)})`,
+    width: `${lerp(52, 88, expansionProgress)}vw`,
+    height: `${lerp(48, 82, expansionProgress)}svh`,
+    borderRadius: `${lerp(28, 10, expansionProgress)}px`,
+    boxShadow: `0 34px 90px rgba(0,0,0,${lerp(0.32, 0.2, expansionProgress)})`,
     transform: "translate3d(-50%, -50%, 0) scale(1)",
     willChange: "width, height, border-radius",
   };
 
   const mobileCardStyle: CSSProperties = {
-    width: isVisible ? "min(90vw, 42svh)" : "min(84vw, 38svh)",
+    width: isVisible ? "min(92vw, 420px)" : "min(86vw, 390px)",
+    height: isVisible ? "min(64svh, 560px)" : "min(58svh, 520px)",
+    borderRadius: "26px",
+    boxShadow: "0 22px 58px rgba(0,0,0,0.24)",
     opacity: isVisible ? 1 : 0,
     transform: isVisible
       ? "translate3d(0, 0, 0) scale(1)"
@@ -203,7 +201,7 @@ export default function ScrollExpandMedia({
   const cardStyle = isMobile ? mobileCardStyle : desktopCardStyle;
   const sectionClassName = reducedMotion
     ? "relative isolate overflow-clip bg-[#fffdf9]"
-    : "relative isolate overflow-clip bg-[#fffdf9] md:h-[160svh]";
+    : "relative isolate overflow-clip bg-[#fffdf9] md:h-[190svh]";
   const stageClassName = reducedMotion
     ? "relative flex min-h-[92svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-12 md:min-h-svh"
     : "relative flex min-h-[92svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-12 md:sticky md:top-0 md:h-svh md:min-h-0 md:gap-0 md:p-0";
@@ -245,7 +243,7 @@ export default function ScrollExpandMedia({
         </div>
 
         <div
-          className="relative z-10 mx-auto aspect-[9/16] overflow-hidden border border-white/35 bg-black shadow-[0_28px_75px_rgba(0,0,0,0.3)] transition-[opacity,transform,width,height] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:absolute md:left-1/2 md:top-1/2 md:mx-0 md:aspect-auto md:transition-none"
+          className="relative z-10 mx-auto overflow-hidden border border-white/20 bg-neutral-950 shadow-[0_28px_75px_rgba(0,0,0,0.3)] transition-[opacity,transform,width,height] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:absolute md:left-1/2 md:top-1/2 md:mx-0 md:transition-none"
           style={cardStyle}
         >
           <video
@@ -262,8 +260,7 @@ export default function ScrollExpandMedia({
           >
             <source src={activeMediaSrc} type="video/mp4" />
           </video>
-          <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/18" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/18 to-transparent md:h-28" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/14 to-transparent md:h-28" />
         </div>
       </div>
     </section>

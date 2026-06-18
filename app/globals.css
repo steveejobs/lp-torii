@@ -294,6 +294,39 @@ img {
   }
 }
 
+.gallery-marquee {
+  animation-duration: 46s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.gallery-marquee-left {
+  animation-name: galleryMarqueeLeft;
+}
+
+.gallery-marquee-right {
+  animation-name: galleryMarqueeRight;
+}
+
+@keyframes galleryMarqueeLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-50% - 8px), 0, 0);
+  }
+}
+
+@keyframes galleryMarqueeRight {
+  from {
+    transform: translate3d(calc(-50% - 8px), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -308,6 +341,11 @@ img {
     opacity: 1;
     transform: none;
     clip-path: none;
+  }
+
+  .gallery-marquee {
+    animation: none !important;
+    transform: none !important;
   }
 }
 

@@ -1,69 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { images } from "@/lib/site";
 
 type GalleryItem = {
-  type: "image" | "video";
   src: string;
   alt: string;
-  poster?: string;
-  className: string;
-  sizes: string;
 };
-
-const galleryItems: GalleryItem[] = [
-  {
-    type: "image",
-    src: images.foodGallery01,
-    alt: "Uramakis com molho sendo servido",
-    className: "md:col-span-5 md:row-span-2",
-    sizes: "(max-width: 768px) 86vw, 42vw",
-  },
-  {
-    type: "video",
-    src: images.galleryVideo01,
-    alt: "Vídeo de pratos japoneses do Torii",
-    className: "md:col-span-4 md:row-span-1",
-    sizes: "(max-width: 768px) 76vw, 34vw",
-  },
-  {
-    type: "image",
-    src: images.foodGallery02,
-    alt: "Sushi com salmão em close",
-    className: "md:col-span-3 md:row-span-1",
-    sizes: "(max-width: 768px) 76vw, 24vw",
-  },
-  {
-    type: "image",
-    src: images.foodGallery03,
-    alt: "Sushi servido em ambiente de luz baixa",
-    className: "md:col-span-4 md:row-span-2",
-    sizes: "(max-width: 768px) 76vw, 34vw",
-  },
-  {
-    type: "image",
-    src: images.foodGallery04,
-    alt: "Sushi em prato com wasabi",
-    className: "md:col-span-4 md:row-span-1",
-    sizes: "(max-width: 768px) 76vw, 34vw",
-  },
-  {
-    type: "image",
-    src: images.foodGallery05,
-    alt: "Uramaki em destaque com fundo desfocado",
-    className: "md:col-span-3 md:row-span-2",
-    sizes: "(max-width: 768px) 76vw, 24vw",
-  },
-  {
-    type: "image",
-    src: images.foodGallery06,
-    alt: "Peças de sushi em mesa clara",
-    className: "md:col-span-5 md:row-span-1",
-    sizes: "(max-width: 768px) 86vw, 42vw",
-  },
-];
 
 const categories = [
   "Sushis e sashimis",
@@ -73,18 +17,68 @@ const categories = [
   "Peças especiais",
 ];
 
+function GalleryCard({
+  item,
+  index,
+  compact = false,
+}: {
+  item: GalleryItem;
+  index: number;
+  compact?: boolean;
+}) {
+  return (
+    <figure
+      className={`group relative shrink-0 overflow-hidden rounded-[18px] bg-neutral-950 shadow-[0_18px_42px_rgba(16,16,16,0.09)] ${
+        compact
+          ? "h-[220px] w-[72vw]"
+          : index % 5 === 0
+            ? "h-[250px] w-[360px]"
+            : index % 3 === 0
+              ? "h-[250px] w-[300px]"
+              : "h-[250px] w-[250px]"
+      }`}
+    >
+      <Image
+        src={item.src}
+        alt={item.alt}
+        fill
+        sizes={
+          compact
+            ? "(max-width: 768px) 72vw, 300px"
+            : "(max-width: 768px) 72vw, 360px"
+        }
+        quality={84}
+        loading="lazy"
+        className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:group-hover:scale-[1.02]"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-transparent" />
+    </figure>
+  );
+}
+
 export function FoodGallerySection() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [isVisible, setIsVisible] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+
+  const galleryItems = useMemo<GalleryItem[]>(
+    () =>
+      images.foodGallery.map((src, index) => ({
+        src,
+        alt: `Seleção de comida japonesa do Torii ${index + 1}`,
+      })),
+    [],
+  );
+
+  const firstRow = galleryItems.filter((_, index) => index % 2 === 0);
+  const secondRow = galleryItems.filter((_, index) => index % 2 === 1);
+  const animationState = isVisible && !reducedMotion ? "running" : "paused";
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(reducedQuery.matches);
 
     const syncReducedMotion = () => {
       setReducedMotion(reducedQuery.matches);
@@ -95,7 +89,7 @@ export function FoodGallerySection() {
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.18, rootMargin: "0px 0px -10% 0px" },
+      { threshold: 0.16, rootMargin: "0px 0px -8% 0px" },
     );
 
     observer.observe(section);
@@ -107,18 +101,6 @@ export function FoodGallerySection() {
       reducedQuery.removeEventListener("change", syncReducedMotion);
     };
   }, []);
-
-  useEffect(() => {
-    videoRefs.current.forEach((video) => {
-      if (!video) return;
-
-      if (isVisible && !reducedMotion) {
-        void video.play().catch(() => undefined);
-      } else {
-        video.pause();
-      }
-    });
-  }, [isVisible, reducedMotion]);
 
   return (
     <section
@@ -139,56 +121,50 @@ export function FoodGallerySection() {
             pensada para a noite.
           </p>
         </div>
+      </div>
 
-        <div
-          id="destaques-gallery"
-          className="no-scrollbar mt-10 flex gap-3 overflow-x-auto pb-2 md:grid md:auto-rows-[178px] md:grid-cols-12 md:gap-4 md:overflow-visible md:pb-0 lg:auto-rows-[196px]"
-        >
+      <div
+        className={`mt-10 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isVisible || reducedMotion
+            ? "translate-y-0 opacity-100"
+            : "translate-y-5 opacity-0"
+        }`}
+      >
+        <div className="no-scrollbar flex gap-3 overflow-x-auto px-4 pb-2 md:hidden">
           {galleryItems.map((item, index) => (
-            <figure
-              key={`${item.type}-${item.src}`}
-              className={`group relative h-[320px] min-w-[76vw] overflow-hidden rounded-lg bg-neutral-950 shadow-[0_20px_60px_rgba(16,16,16,0.08)] transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:h-auto md:min-w-0 ${
-                item.className
-              } ${
-                isVisible || reducedMotion
-                  ? "translate-y-0 scale-100 opacity-100"
-                  : "translate-y-6 scale-[0.985] opacity-0"
-              }`}
-              style={{ transitionDelay: `${index * 75}ms` }}
-            >
-              {item.type === "video" ? (
-                <video
-                  ref={(node) => {
-                    videoRefs.current[index] = node;
-                  }}
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  poster={item.poster}
-                  aria-label={item.alt}
-                  className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]"
-                  controls={false}
-                  disablePictureInPicture
-                >
-                  <source src={item.src} type="video/mp4" />
-                </video>
-              ) : (
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes={item.sizes}
-                  quality={88}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.025]"
-                />
-              )}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-white/5 opacity-80" />
-            </figure>
+            <GalleryCard key={item.src} item={item} index={index} compact />
           ))}
         </div>
 
+        <div className="hidden space-y-4 md:block">
+          <div
+            className="gallery-marquee gallery-marquee-left flex w-max gap-4"
+            style={{ animationPlayState: animationState }}
+          >
+            {[...firstRow, ...firstRow].map((item, index) => (
+              <GalleryCard
+                key={`${item.src}-row-a-${index}`}
+                item={item}
+                index={index}
+              />
+            ))}
+          </div>
+          <div
+            className="gallery-marquee gallery-marquee-right flex w-max gap-4"
+            style={{ animationPlayState: animationState }}
+          >
+            {[...secondRow, ...secondRow].map((item, index) => (
+              <GalleryCard
+                key={`${item.src}-row-b-${index}`}
+                item={item}
+                index={index + 2}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="container-page">
         <div className="no-scrollbar mt-7 flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:justify-center md:overflow-visible md:pb-0">
           {categories.map((category, index) => (
             <span

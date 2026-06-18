@@ -37,6 +37,8 @@ interface InkRevealProps {
   revealDelay?: number;
   /** Duration of the final mask fade */
   revealFadeDuration?: number;
+  /** Direction used by the automatic reveal stroke */
+  autoRevealPath?: "horizontal" | "vertical";
 }
 
 interface Stamp {
@@ -65,6 +67,7 @@ export default function InkReveal({
   autoReveal = false,
   revealDelay = 1200,
   revealFadeDuration = 900,
+  autoRevealPath = "horizontal",
 }: InkRevealProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stampsRef = useRef<Stamp[]>([]);
@@ -251,10 +254,25 @@ export default function InkReveal({
       const elapsed = time - started;
       const { w, h } = dimsRef.current;
       const t = elapsed / 1000;
-      const x = w * (0.18 + 0.64 * Math.min(elapsed / revealDelay, 1));
-      const y = h * (0.42 + Math.sin(t * 4.2) * 0.16);
+      const progress = Math.min(elapsed / revealDelay, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const horizontal = autoRevealPath === "horizontal";
+      const x = horizontal
+        ? -brushSize + (w + brushSize * 2) * eased
+        : w * (0.34 + 0.32 * eased + Math.sin(t * 3.4) * 0.04);
+      const y = horizontal
+        ? h * (0.2 + 0.56 * progress + Math.sin(t * 3.6) * 0.055)
+        : -brushSize + (h + brushSize * 2) * eased;
 
       stampAlong(x, y);
+      addStamp(
+        horizontal ? x - brushSize * 0.28 : x + brushSize * 0.42,
+        horizontal ? y + brushSize * 0.42 : y - brushSize * 0.24,
+      );
+      addStamp(
+        horizontal ? x + brushSize * 0.22 : x - brushSize * 0.38,
+        horizontal ? y - brushSize * 0.36 : y + brushSize * 0.22,
+      );
       startLoop();
 
       if (elapsed < revealDelay) {
@@ -272,7 +290,15 @@ export default function InkReveal({
         window.clearTimeout(revealTimeoutRef.current);
       }
     };
-  }, [autoReveal, revealDelay, stampAlong, startLoop]);
+  }, [
+    addStamp,
+    autoReveal,
+    autoRevealPath,
+    brushSize,
+    revealDelay,
+    stampAlong,
+    startLoop,
+  ]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
