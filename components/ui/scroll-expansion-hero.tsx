@@ -19,6 +19,33 @@ function clamp(value: number, min = 0, max = 1) {
   return Math.min(Math.max(value, min), max);
 }
 
+function mapRange(
+  value: number,
+  inputMin: number,
+  inputMax: number,
+  outputMin: number,
+  outputMax: number,
+) {
+  const mapped =
+    outputMin +
+    ((value - inputMin) / Math.max(inputMax - inputMin, 0.0001)) *
+      (outputMax - outputMin);
+
+  return clamp(
+    mapped,
+    Math.min(outputMin, outputMax),
+    Math.max(outputMin, outputMax),
+  );
+}
+
+function easeOutCubic(value: number) {
+  return 1 - Math.pow(1 - clamp(value), 3);
+}
+
+function lerp(start: number, end: number, amount: number) {
+  return start + (end - start) * amount;
+}
+
 export default function ScrollExpandMedia({
   mediaSrc,
   mobileMediaSrc,
@@ -32,7 +59,6 @@ export default function ScrollExpandMedia({
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const frameRef = useRef<number | null>(null);
-  const metricsRef = useRef({ top: 0, height: 1, viewport: 1 });
   const visibleRef = useRef(false);
   const mobileRef = useRef(false);
   const reducedMotionRef = useRef(false);
@@ -50,7 +76,7 @@ export default function ScrollExpandMedia({
       reducedMotionRef.current = reducedQuery.matches;
       setIsMobile(mobileRef.current);
       setReducedMotion(reducedMotionRef.current);
-      if (mobileRef.current || reducedMotionRef.current) setProgress(1);
+      if (mobileRef.current || reducedMotionRef.current) setProgress(0);
     };
 
     syncMedia();
@@ -67,17 +93,9 @@ export default function ScrollExpandMedia({
     const section = sectionRef.current;
     if (!section) return;
 
-    const updateMetrics = () => {
-      const rect = section.getBoundingClientRect();
-      metricsRef.current = {
-        top: window.scrollY + rect.top,
-        height: rect.height,
-        viewport: window.innerHeight,
-      };
-    };
-
     const updateProgress = () => {
       frameRef.current = null;
+
       if (
         !visibleRef.current ||
         mobileRef.current ||
@@ -86,10 +104,12 @@ export default function ScrollExpandMedia({
         return;
       }
 
-      const { top, height, viewport } = metricsRef.current;
-      const start = top - viewport * 0.18;
-      const end = top + height - viewport * 1.08;
-      setProgress(clamp((window.scrollY - start) / Math.max(end - start, 1)));
+      const rect = section.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+      const total = Math.max(rect.height - viewportH, 1);
+      const rawProgress = clamp(-rect.top / total);
+
+      setProgress(rawProgress);
     };
 
     const requestProgress = () => {
@@ -107,23 +127,19 @@ export default function ScrollExpandMedia({
       ([entry]) => {
         visibleRef.current = entry.isIntersecting;
         setIsVisible(entry.isIntersecting);
-        if (entry.isIntersecting) {
-          updateMetrics();
-          requestProgress();
-        }
+        if (entry.isIntersecting) requestProgress();
       },
-      { rootMargin: "16% 0px 16% 0px", threshold: 0.01 },
+      { rootMargin: "0px", threshold: 0.01 },
     );
 
-    updateMetrics();
     observer.observe(section);
-    window.addEventListener("resize", updateMetrics);
     window.addEventListener("scroll", requestProgress, { passive: true });
+    window.addEventListener("resize", requestProgress);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("resize", updateMetrics);
       window.removeEventListener("scroll", requestProgress);
+      window.removeEventListener("resize", requestProgress);
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
   }, []);
@@ -139,100 +155,114 @@ export default function ScrollExpandMedia({
     }
   }, [isVisible, reducedMotion, isMobile]);
 
-  const easedProgress = reducedMotion ? 1 : 1 - Math.pow(1 - progress, 3);
   const activeMediaSrc = isMobile && mobileMediaSrc ? mobileMediaSrc : mediaSrc;
   const activePosterSrc =
     isMobile && mobilePosterSrc ? mobilePosterSrc : posterSrc;
+  const expansionProgress = reducedMotion
+    ? 0
+    : easeOutCubic(mapRange(progress, 0.12, 0.82, 0, 1));
+  const textFadeProgress = reducedMotion
+    ? 0
+    : easeOutCubic(mapRange(progress, 0.08, 0.45, 0, 1));
+  const textOpacity = isMobile ? 1 : 1 - textFadeProgress;
 
-  const desktopScale = 0.52 + easedProgress * 0.48;
-  const desktopRadius = 28 - easedProgress * 12;
-  const desktopShadow = 0.24 + easedProgress * 0.16;
-  const textOpacity = clamp(1 - easedProgress * 1.85);
   const backgroundStyle: CSSProperties = {
     transform:
       !isMobile && !reducedMotion
-        ? `translate3d(0, ${easedProgress * -18}px, 0) scale(${1.04 - easedProgress * 0.025})`
+        ? `translate3d(0, ${lerp(0, -14, expansionProgress)}px, 0) scale(${lerp(
+            1.035,
+            1.01,
+            expansionProgress,
+          )})`
         : undefined,
     willChange: !isMobile && !reducedMotion ? "transform" : undefined,
   };
 
-  const cardStyle: CSSProperties = isMobile
-    ? {
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible
-          ? "translate3d(0, 0, 0) scale(1)"
-          : "translate3d(0, 18px, 0) scale(0.96)",
-      }
-    : {
-        borderRadius: `${desktopRadius}px`,
-        boxShadow: `0 34px 90px rgba(0,0,0,${desktopShadow})`,
-        transform: `translate3d(-50%, -50%, 0) scale(${desktopScale})`,
-        willChange: "transform, border-radius",
-      };
+  const desktopCardStyle: CSSProperties = {
+    width: `${lerp(42, 100, expansionProgress)}vw`,
+    height: `${lerp(52, 100, expansionProgress)}svh`,
+    borderRadius: `${lerp(28, 0, expansionProgress)}px`,
+    boxShadow:
+      expansionProgress > 0.98
+        ? "none"
+        : `0 34px 90px rgba(0,0,0,${lerp(0.34, 0.1, expansionProgress)})`,
+    transform: "translate3d(-50%, -50%, 0) scale(1)",
+    willChange: "width, height, border-radius",
+  };
+
+  const mobileCardStyle: CSSProperties = {
+    width: isVisible ? "96vw" : "82vw",
+    height: isVisible ? "64svh" : "46svh",
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible
+      ? "translate3d(0, 0, 0) scale(1)"
+      : "translate3d(0, 18px, 0) scale(0.96)",
+  };
+
+  const cardStyle = isMobile ? mobileCardStyle : desktopCardStyle;
+  const sectionClassName = reducedMotion
+    ? "relative isolate overflow-hidden bg-[#101010]"
+    : "relative isolate overflow-hidden bg-[#101010] md:h-[180svh]";
+  const stageClassName = reducedMotion
+    ? "relative flex min-h-[100svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-12 md:min-h-[100svh]"
+    : "relative flex min-h-[100svh] flex-col items-center justify-center gap-8 overflow-hidden px-4 py-12 md:sticky md:top-0 md:h-[100svh] md:min-h-0 md:gap-0 md:p-0";
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative isolate overflow-hidden bg-[#fffdf9] md:h-[215vh]"
-      aria-label={title}
-    >
-      <div className="relative min-h-[720px] overflow-hidden py-14 md:sticky md:top-0 md:flex md:h-screen md:min-h-0 md:items-center md:justify-center md:py-0">
+    <section ref={sectionRef} className={sectionClassName} aria-label={title}>
+      <div className={stageClassName}>
         <Image
           src={bgImageSrc}
           alt=""
           fill
           sizes="100vw"
-          className="object-cover object-[58%_48%]"
+          className="object-cover object-[54%_50%] opacity-100"
           priority={false}
           style={backgroundStyle}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,249,0.16),rgba(16,16,16,0.08)_42%,rgba(16,16,16,0.18))]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,255,255,0.04),rgba(0,0,0,0.18)_78%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.12)_42%,rgba(0,0,0,0.28))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.04),transparent_58%)]" />
 
         <div
-          className="container-page relative z-10 mb-7 md:absolute md:left-1/2 md:top-[14vh] md:mb-0 md:-translate-x-1/2"
+          className="relative z-20 w-full max-w-[520px] text-white md:absolute md:left-1/2 md:top-[11svh] md:w-[min(calc(100%_-_32px),1180px)] md:max-w-[1180px] md:-translate-x-1/2"
           style={{
-            opacity: isMobile ? 1 : textOpacity,
+            opacity: textOpacity,
             transform: isMobile
               ? undefined
-              : `translate3d(-50%, ${easedProgress * -22}px, 0)`,
+              : `translate3d(-50%, ${lerp(0, -18, textFadeProgress)}px, 0)`,
+            pointerEvents: textOpacity < 0.08 ? "none" : undefined,
           }}
         >
-          <div className="max-w-[460px] rounded-lg bg-white/82 p-5 shadow-[0_18px_50px_rgba(16,16,16,0.08)] backdrop-blur md:bg-white/70">
-            <p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--torii-red)]">
-              {date}
-            </p>
-            <h2 className="mt-3 text-3xl font-black leading-[1.02] text-neutral-950 md:text-5xl">
+          <div className="max-w-[460px]">
+            <p className="text-xs font-black uppercase text-white/78">{date}</p>
+            <h2 className="mt-3 text-3xl font-black leading-[1.02] md:text-5xl">
               {title}
             </h2>
-            <p className="mt-4 text-base font-bold leading-7 text-neutral-700">
+            <p className="mt-4 max-w-[390px] text-base font-bold leading-7 text-white/78">
               {scrollToExpand}
             </p>
           </div>
         </div>
 
-        <div className="container-page relative z-10 md:contents">
-          <div
-            className="relative mx-auto aspect-[4/5] w-full max-w-[420px] overflow-hidden rounded-[24px] border border-white/45 bg-black shadow-[0_28px_75px_rgba(0,0,0,0.28)] transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:absolute md:left-1/2 md:top-1/2 md:mx-0 md:aspect-auto md:h-[72vh] md:max-h-[680px] md:w-[80vw] md:max-w-[1180px] md:rounded-[28px]"
-            style={cardStyle}
+        <div
+          className="relative z-10 mx-auto overflow-hidden border border-white/35 bg-black shadow-[0_28px_75px_rgba(0,0,0,0.3)] transition-[opacity,transform,width,height] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:absolute md:left-1/2 md:top-1/2 md:mx-0 md:transition-none"
+          style={cardStyle}
+        >
+          <video
+            key={activeMediaSrc}
+            ref={videoRef}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={activePosterSrc}
+            className="h-full w-full object-cover"
+            controls={false}
+            disablePictureInPicture
           >
-            <video
-              key={activeMediaSrc}
-              ref={videoRef}
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={activePosterSrc}
-              className="h-full w-full object-cover"
-              controls={false}
-              disablePictureInPicture
-            >
-              <source src={activeMediaSrc} type="video/mp4" />
-            </video>
-            <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/20" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/24 to-transparent md:h-32" />
-          </div>
+            <source src={activeMediaSrc} type="video/mp4" />
+          </video>
+          <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/18" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/18 to-transparent md:h-28" />
         </div>
       </div>
     </section>

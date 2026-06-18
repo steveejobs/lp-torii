@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { FoodGallerySection } from "@/components/FoodGallerySection";
 import { Header } from "@/components/Header";
 import { HeroInteractiveIntro } from "@/components/HeroInteractiveIntro";
 import { HeroMotionPlaceholder } from "@/components/HeroMotionPlaceholder";
@@ -35,18 +36,6 @@ const experiences = [
     text: "Faça o pedido e retire no restaurante com mais agilidade.",
     cta: "Pedir para retirada",
     href: buildWhatsappLink(whatsappMessages.pickup),
-  },
-];
-
-const kitchenHighlights = [
-  { title: "Sushis e sashimis", image: images.pratoSushi01, fit: "cover" },
-  { title: "Temakis", image: images.pratoSushi04, fit: "cover" },
-  { title: "Pokes", image: images.pratoSushi02, fit: "cover" },
-  { title: "Combinados", image: images.pratoSushi07, fit: "cover" },
-  {
-    title: "Peças especiais do rodízio",
-    image: images.pratoSushi08,
-    fit: "cover",
   },
 ];
 
@@ -229,13 +218,13 @@ export default function Home() {
                 </div>
                 <div className="image-soft aspect-[4/3]">
                   <Image
-                    src={images.pratoSushi06}
-                    alt="Pratos japoneses no balcão do Torii"
-                    width={1672}
-                    height={941}
+                    src={images.ambienteInterno}
+                    alt="Detalhe do balcão iluminado do Torii"
+                    width={1122}
+                    height={1402}
                     loading="lazy"
                     sizes="(max-width: 768px) 92vw, 42vw"
-                    className="h-full w-full object-cover object-center"
+                    className="h-full w-full object-cover object-[58%_42%]"
                   />
                 </div>
               </div>
@@ -245,43 +234,7 @@ export default function Home() {
 
         <ScrollExperienceFeature />
 
-        <section id="destaques" className="section-pad bg-[#f7f2ec]">
-          <div className="container-page">
-            <Reveal threshold={0.45}>
-              <SectionIntro
-                eyebrow="Cozinha"
-                title="Destaques para abrir o apetite antes de escolher sua experiência."
-                copy="Pratos japoneses com apresentação cuidada, variedade e clima de jantar."
-              />
-            </Reveal>
-            <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-              {kitchenHighlights.map((item, index) => (
-                <Reveal
-                  key={`${item.title}-${index}`}
-                  delay={index * 70}
-                  threshold={0.2}
-                  className="h-full"
-                >
-                  <article className="group h-full overflow-hidden rounded-lg bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                    <div className="relative aspect-[4/3]">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 20vw"
-                        loading="lazy"
-                        className={`${item.fit === "contain" ? "object-contain p-3" : "object-cover"} transition duration-500 group-hover:scale-[1.03]`}
-                      />
-                    </div>
-                    <h3 className="p-4 text-base font-black text-neutral-950">
-                      {item.title}
-                    </h3>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        <FoodGallerySection />
 
         <section className="section-pad relative bg-[var(--torii-black)] text-white">
           <div className="absolute left-0 top-0 h-px w-full bg-white/16" />

@@ -10,7 +10,7 @@ export function ScrollExperienceFeature() {
       mobileMediaSrc={images.scrollExperienceVideoMobile}
       posterSrc={images.ambienteInterno}
       mobilePosterSrc={images.ambienteInterno}
-      bgImageSrc={images.ambienteInterno}
+      bgImageSrc={images.scrollExperienceBg}
       title="Do salão ao primeiro prato."
       date="TORII À NOITE"
       scrollToExpand="Uma experiência que começa no ambiente e continua à mesa."

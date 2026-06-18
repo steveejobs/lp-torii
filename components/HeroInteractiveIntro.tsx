@@ -89,11 +89,11 @@ export function HeroInteractiveIntro() {
   }, [setVars]);
 
   return (
-    <section className="bg-[#fffdf9] pt-5 md:pt-8" aria-label="Abertura Torii">
+    <section className="bg-[#fffdf9] pt-4 md:pt-6" aria-label="Abertura Torii">
       <div className="container-page">
         <div
           ref={stageRef}
-          className="intro-stage relative isolate h-[380px] overflow-hidden rounded-lg border border-black/10 bg-[#fffdf9] shadow-[0_26px_70px_rgba(16,16,16,0.08)] md:h-[440px]"
+          className="intro-stage relative isolate h-[76svh] min-h-[520px] overflow-hidden rounded-lg border border-black/10 bg-[#fffdf9] shadow-[0_28px_76px_rgba(16,16,16,0.1)] md:h-[84vh] md:min-h-[640px]"
           style={{ "--x": "58%", "--y": "44%" } as IntroStyle}
           onMouseMove={(event) => {
             pointerRef.current = { x: event.clientX, y: event.clientY };
@@ -109,15 +109,16 @@ export function HeroInteractiveIntro() {
           }}
         >
           <Image
-            src={images.pratoSushi09}
-            alt="Combinado japonês do Torii em mesa de madeira"
+            src={images.heroIntro}
+            alt="Preparo de sushi do Torii em bancada"
             fill
             priority
-            sizes="(max-width: 768px) 92vw, 1180px"
-            className="absolute inset-0 object-cover object-[44%_52%] opacity-100 md:object-[50%_50%]"
+            quality={92}
+            sizes="(max-width: 768px) 100vw, 1180px"
+            className="absolute inset-0 object-cover object-[54%_50%] opacity-100 md:object-[58%_48%]"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,249,0.18)_0%,rgba(255,253,249,0.08)_42%,rgba(255,253,249,0.72)_100%)] md:bg-[linear-gradient(90deg,rgba(255,253,249,0.84)_0%,rgba(255,253,249,0.46)_38%,rgba(255,253,249,0.08)_100%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(196,30,47,0.08),transparent_42%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,253,249,0.1)_0%,rgba(255,253,249,0.05)_44%,rgba(255,253,249,0.62)_100%)] md:bg-[linear-gradient(90deg,rgba(255,253,249,0.72)_0%,rgba(255,253,249,0.34)_38%,rgba(255,253,249,0.04)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_48%,rgba(196,30,47,0.06),transparent_46%)]" />
           <InkReveal
             maskColor={[255, 253, 249]}
             brushSize={150}
@@ -125,6 +126,7 @@ export function HeroInteractiveIntro() {
             stampStep={14}
             maxStamps={160}
             className="hidden md:block"
+            style={{ opacity: 0.58 }}
             autoMobile={false}
           />
           <InkReveal
@@ -134,6 +136,7 @@ export function HeroInteractiveIntro() {
             stampStep={18}
             maxStamps={90}
             className="md:hidden"
+            style={{ opacity: 0.5 }}
           />
 
           <div className="pointer-events-none absolute inset-0 z-20">
