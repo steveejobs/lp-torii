@@ -175,10 +175,18 @@ export default function InstagramLinksPage() {
           >
             Reservar pelo WhatsApp
           </LinkButton>
-          <LinkButton href={whatsappLinks.delivery} icon={<IconBag />} delay={220}>
+          <LinkButton
+            href={whatsappLinks.delivery}
+            icon={<IconBag />}
+            delay={220}
+          >
             Pedir delivery
           </LinkButton>
-          <LinkButton href={whatsappLinks.pickup} icon={<IconBag />} delay={290}>
+          <LinkButton
+            href={whatsappLinks.pickup}
+            icon={<IconBag />}
+            delay={290}
+          >
             Pedir para retirada
           </LinkButton>
           <LinkButton href={FULL_SITE_URL} icon={<IconArrow />} delay={360}>

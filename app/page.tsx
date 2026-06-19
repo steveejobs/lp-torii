@@ -94,40 +94,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-y border-black/5 bg-[#fffaf4]">
-          <Reveal
-            threshold={0.35}
-            className="container-page flex flex-col items-center justify-center gap-3 py-4 text-center md:flex-row md:gap-5"
-          >
-            <p className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-black text-neutral-900 shadow-[0_10px_24px_rgba(16,16,16,0.04)]">
-              <span className="text-[var(--torii-red)]" aria-hidden="true">
-                ★★★★★
-              </span>
-              <span>4,4 no Google · 382 avaliações</span>
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {[
-                "Rodízio à noite",
-                "Delivery",
-                "Retirada",
-                "Araguaína - TO",
-                "Reserva pelo WhatsApp",
-              ].map((item) => (
-                <span
-                  key={item}
-                  className="inline-flex items-center rounded-full border border-[#eee3d8] bg-white px-3.5 py-2 text-[0.72rem] font-black uppercase tracking-wide text-neutral-700 shadow-[0_8px_18px_rgba(16,16,16,0.025)]"
-                >
-                  <span
-                    className="mr-2 h-1.5 w-1.5 rounded-full bg-[var(--torii-red)]"
-                    aria-hidden="true"
-                  />
-                  {item}
-                </span>
-              ))}
-            </div>
-          </Reveal>
-        </section>
-
         <section id="experiencias" className="section-pad bg-[#fffdf9]">
           <div className="container-page">
             <Reveal threshold={0.45}>
@@ -195,8 +161,8 @@ export default function Home() {
                   Ambiente quente, contraste preto e ritmo de jantar.
                 </p>
                 <p className="mt-5 max-w-md text-base font-bold leading-7 text-neutral-600 md:text-lg">
-                  Madeira, luz baixa e atendimento direto para jantar com
-                  calma, seja em casal, familia ou grupo.
+                  Madeira, luz baixa e atendimento direto para jantar com calma,
+                  seja em casal, familia ou grupo.
                 </p>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-1">
@@ -232,10 +198,7 @@ export default function Home() {
 
         <section className="section-pad bg-white">
           <div className="container-page">
-            <Reveal
-              threshold={0.42}
-              className="max-w-3xl"
-            >
+            <Reveal threshold={0.42} className="max-w-3xl">
               <p className="text-sm font-black text-[var(--torii-red)]">
                 ★★★★★ 4,4 no Google · 382 avaliações
               </p>
@@ -243,8 +206,8 @@ export default function Home() {
                 Quem conhece, volta.
               </h2>
               <p className="mt-5 max-w-2xl text-base font-bold leading-7 text-neutral-600 md:text-lg">
-                Uma casa de comida japonesa para jantar com calma, pedir em casa
-                ou retirar no caminho.
+                Comida bem servida, ambiente agradável e atendimento à noite
+                para jantar no salão, pedir em casa ou retirar no caminho.
               </p>
             </Reveal>
           </div>
