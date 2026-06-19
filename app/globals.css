@@ -158,7 +158,7 @@ img {
 }
 
 .intro-stage {
-  background-color: #e7dccb;
+  background-color: #e8ddca;
 }
 
 .intro-stage::after {
@@ -190,7 +190,7 @@ img {
 }
 
 .hero-burn-paper-base {
-  fill: #e7dccb;
+  fill: #e8ddca;
 }
 
 .hero-burn-paper-grain {
@@ -214,13 +214,12 @@ img {
 
 .hero-burn-edge-glow {
   opacity: 0;
-  filter: blur(0.35px);
   animation:
     heroBurnHoleGrow 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards,
     heroBurnWarmFade 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
 }
 
-.hero-burn-edge-glow path {
+.hero-burn-edge-glow ellipse {
   stroke: rgba(232, 132, 52, 0.42);
   stroke-linejoin: round;
   stroke-width: 1.6;
@@ -234,7 +233,7 @@ img {
     heroBurnCharFade 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
 }
 
-.hero-burn-edge-char path {
+.hero-burn-edge-char ellipse {
   stroke: rgba(34, 20, 12, 0.76);
   stroke-linejoin: round;
   stroke-width: 0.78;
@@ -319,57 +318,6 @@ img {
 
 @keyframes heroCopyIn {
   to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes heroClipA {
-  0%,
-  22% {
-    clip-path: inset(0 0 0 0);
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-  32%,
-  100% {
-    clip-path: inset(0 0 0 100%);
-    opacity: 0;
-    transform: translate3d(16px, 0, 0);
-  }
-}
-
-@keyframes heroClipB {
-  0%,
-  28% {
-    clip-path: inset(0 100% 0 0);
-    opacity: 0;
-    transform: translate3d(-16px, 0, 0);
-  }
-  38%,
-  60% {
-    clip-path: inset(0 0 0 0);
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-  72%,
-  100% {
-    clip-path: inset(0 0 0 100%);
-    opacity: 0;
-    transform: translate3d(16px, 0, 0);
-  }
-}
-
-@keyframes heroClipC {
-  0%,
-  62% {
-    clip-path: inset(0 100% 0 0);
-    opacity: 0;
-    transform: translate3d(-16px, 0, 0);
-  }
-  72%,
-  100% {
-    clip-path: inset(0 0 0 0);
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
@@ -570,11 +518,11 @@ img {
     filter: none;
   }
 
-  .hero-burn-edge-glow path {
+  .hero-burn-edge-glow ellipse {
     stroke-width: 1.2;
   }
 
-  .hero-burn-edge-char path {
+  .hero-burn-edge-char ellipse {
     stroke-width: 0.62;
   }
 
