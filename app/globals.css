@@ -158,61 +158,145 @@ img {
 }
 
 .intro-stage {
-  --x: 58%;
-  --y: 44%;
+  background-color: #e7dccb;
 }
 
 .intro-stage::after {
   position: absolute;
   inset: 0;
-  z-index: 25;
+  z-index: 18;
   pointer-events: none;
   content: "";
   background:
-    radial-gradient(
-      circle at var(--x) var(--y),
-      rgba(196, 30, 47, 0.1),
-      transparent 22%
-    ),
+    radial-gradient(circle at 72% 34%, rgba(196, 30, 47, 0.1), transparent 36%),
     linear-gradient(180deg, rgba(16, 16, 16, 0.02), transparent 45%);
 }
 
-.intro-sun {
-  left: calc(var(--x) - 56px);
-  top: calc(var(--y) - 56px);
-  transform: translate3d(0, 0, 0);
-  transition: opacity 240ms ease;
+.hero-burn-reveal {
+  position: absolute;
+  inset: -1px;
+  z-index: 30;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #e7dccb;
+  background-image:
+    radial-gradient(circle at 16% 20%, rgba(255, 255, 255, 0.28) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 78% 64%, rgba(102, 70, 42, 0.09) 0 1px, transparent 1.8px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 8px),
+    linear-gradient(115deg, rgba(255, 255, 255, 0.2), transparent 38%, rgba(82, 53, 31, 0.06));
+  background-size: 44px 44px, 58px 58px, auto, auto;
+  clip-path: polygon(-8% 0, 100% 0, 100% 100%, -8% 100%);
+  animation: heroPaperRecede 2050ms cubic-bezier(0.22, 1, 0.36, 1) 160ms forwards;
+  will-change: clip-path, opacity;
 }
 
-.intro-line {
-  transform: translate3d(0, 0, 0) scaleX(1);
-  transform-origin: left;
+.hero-burn-reveal__edge {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: -13%;
+  width: clamp(92px, 13vw, 180px);
+  opacity: 0.92;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(244, 152, 76, 0.06) 22%,
+      rgba(250, 169, 88, 0.22) 38%,
+      rgba(94, 52, 27, 0.44) 49%,
+      rgba(76, 43, 25, 0.2) 58%,
+      transparent 76%
+    ),
+    radial-gradient(circle at 52% 18%, rgba(255, 194, 112, 0.24), transparent 18%),
+    radial-gradient(circle at 47% 58%, rgba(77, 41, 23, 0.18), transparent 20%);
+  clip-path: polygon(
+    44% 0,
+    60% 7%,
+    48% 14%,
+    64% 22%,
+    47% 31%,
+    62% 40%,
+    43% 49%,
+    58% 58%,
+    46% 68%,
+    63% 78%,
+    45% 88%,
+    58% 100%,
+    100% 100%,
+    100% 0
+  );
+  filter: blur(0.25px);
+  animation: heroBurnEdgeTravel 2050ms cubic-bezier(0.22, 1, 0.36, 1) 160ms forwards;
+  will-change: left, opacity;
 }
 
-.intro-line-a {
-  left: calc(var(--x) - 76px);
-  top: calc(var(--y) + 8px);
+.hero-intro-copy {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  animation: heroCopyIn 720ms cubic-bezier(0.22, 1, 0.36, 1) 720ms forwards;
+  will-change: opacity, transform;
 }
 
-.intro-line-b {
-  left: calc(var(--x) - 22px);
-  top: calc(var(--y) + 42px);
-}
-
-@media (min-width: 768px) {
-  .intro-sun {
-    left: calc(var(--x) - 88px);
-    top: calc(var(--y) - 88px);
+@keyframes heroPaperRecede {
+  0%,
+  8% {
+    clip-path: polygon(-8% 0, 100% 0, 100% 100%, -8% 100%);
+    opacity: 1;
   }
-
-  .intro-line-a {
-    left: calc(var(--x) - 132px);
-    top: calc(var(--y) + 10px);
+  22% {
+    clip-path: polygon(13% 0, 9% 7%, 15% 15%, 10% 24%, 17% 34%, 12% 43%, 19% 53%, 11% 64%, 16% 75%, 10% 87%, 15% 100%, 100% 100%, 100% 0);
   }
+  48% {
+    clip-path: polygon(45% 0, 39% 8%, 48% 18%, 41% 28%, 51% 39%, 43% 49%, 50% 60%, 40% 71%, 47% 83%, 42% 92%, 49% 100%, 100% 100%, 100% 0);
+  }
+  74% {
+    clip-path: polygon(76% 0, 70% 9%, 80% 18%, 73% 29%, 82% 40%, 75% 51%, 84% 62%, 72% 73%, 79% 84%, 74% 93%, 82% 100%, 100% 100%, 100% 0);
+    opacity: 1;
+  }
+  92% {
+    clip-path: polygon(102% 0, 96% 10%, 105% 20%, 98% 31%, 106% 42%, 99% 54%, 108% 65%, 97% 76%, 104% 88%, 99% 96%, 107% 100%, 100% 100%, 100% 0);
+    opacity: 0.92;
+  }
+  100% {
+    clip-path: polygon(118% 0, 112% 12%, 121% 24%, 114% 36%, 122% 50%, 116% 64%, 124% 78%, 115% 91%, 122% 100%, 100% 100%, 100% 0);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
 
-  .intro-line-b {
-    left: calc(var(--x) - 22px);
-    top: calc(var(--y) + 58px);
+@keyframes heroBurnEdgeTravel {
+  0%,
+  8% {
+    left: -13%;
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.9;
+  }
+  22% {
+    left: 5%;
+  }
+  48% {
+    left: 37%;
+  }
+  74% {
+    left: 68%;
+    opacity: 0.88;
+  }
+  92% {
+    left: 93%;
+    opacity: 0.42;
+  }
+  100% {
+    left: 110%;
+    opacity: 0;
+  }
+}
+
+@keyframes heroCopyIn {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -421,6 +505,16 @@ img {
     transform: none !important;
     transition: none !important;
   }
+
+  .hero-burn-reveal {
+    display: none;
+  }
+
+  .hero-intro-copy {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media (max-width: 480px) {
@@ -436,5 +530,21 @@ img {
     width: 100%;
     min-height: 50px;
     padding-inline: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-burn-reveal,
+  .hero-burn-reveal__edge {
+    animation-duration: 1650ms;
+  }
+
+  .hero-burn-reveal__edge {
+    width: 92px;
+    filter: none;
+  }
+
+  .hero-intro-copy {
+    animation-delay: 560ms;
   }
 }

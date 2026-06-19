@@ -17,8 +17,8 @@ export const facadeMedia = {
 
 export const homeHeroImage = {
   // Uso exclusivo: primeira hero / Home 1. Nao usar em outras secoes.
-  src: "/torii/ambiente-interno-torii.png",
-  alt: "Ambiente interno do Torii com bandeiras vermelhas e luz quente",
+  src: "/torii/imagem hero.jpg",
+  alt: "Preparo de sushi no Torii com acabamento delicado",
 } satisfies ToriiMediaAsset;
 
 export const heroMedia = [homeHeroImage] satisfies ToriiMediaAsset[];

@@ -106,7 +106,7 @@ export default function ScrollExpandMedia({
               </p>
             </div>
 
-            <div className="hidden justify-self-end overflow-hidden rounded-[26px] border border-white/20 bg-neutral-950 p-2 shadow-[0_28px_75px_rgba(0,0,0,0.3)] md:block">
+            <div className="hidden aspect-[9/16] w-full max-w-[338px] justify-self-end overflow-hidden rounded-[26px] bg-transparent shadow-[0_28px_75px_rgba(0,0,0,0.24)] md:block">
               <video
                 key={activeVideoSrc}
                 ref={desktopVideoRef}
@@ -115,7 +115,7 @@ export default function ScrollExpandMedia({
                 playsInline
                 preload="metadata"
                 poster={activePoster}
-                className="aspect-[9/14] max-h-[600px] w-full rounded-[20px] object-cover"
+                className="block h-full w-full scale-[1.03] object-cover object-center"
                 controls={false}
                 disablePictureInPicture
               >
@@ -123,7 +123,7 @@ export default function ScrollExpandMedia({
               </video>
             </div>
 
-            <div className="overflow-hidden rounded-[24px] border border-white/20 bg-neutral-950 p-2 shadow-[0_18px_46px_rgba(0,0,0,0.24)] md:hidden">
+            <div className="mx-auto aspect-[9/16] w-full max-w-[270px] overflow-hidden rounded-[24px] bg-transparent shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:hidden">
               <video
                 key={activeVideoSrc}
                 ref={mobileVideoRef}
@@ -132,7 +132,7 @@ export default function ScrollExpandMedia({
                 playsInline
                 preload="metadata"
                 poster={activePoster}
-                className="aspect-[9/14] max-h-[480px] w-full rounded-[18px] object-cover"
+                className="block h-full w-full scale-[1.03] object-cover object-center"
                 controls={false}
                 disablePictureInPicture
               >

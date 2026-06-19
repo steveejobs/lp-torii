@@ -66,7 +66,7 @@ export function InstagramVideoMoment({
           </h2>
           <div className="mt-4 h-px w-14 bg-[var(--torii-red)]" />
         </div>
-        <div className="relative aspect-[9/14] max-h-[340px] overflow-hidden rounded-[24px] bg-neutral-950 shadow-[0_16px_36px_rgba(16,16,16,0.16)]">
+        <div className="relative ml-auto aspect-[9/16] w-full max-w-[192px] overflow-hidden rounded-[24px] bg-transparent shadow-[0_16px_36px_rgba(16,16,16,0.16)]">
           <video
             ref={videoRef}
             muted
@@ -74,7 +74,7 @@ export function InstagramVideoMoment({
             playsInline
             preload="metadata"
             poster={posterSrc}
-            className="h-full w-full object-cover"
+            className="block h-full w-full scale-[1.03] object-cover object-center"
             controls={false}
             disablePictureInPicture
           >
