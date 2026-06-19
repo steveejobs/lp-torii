@@ -1,6 +1,55 @@
 import Image from "next/image";
 import { images } from "@/lib/site";
 
+const burnShapes = [
+  {
+    key: "core",
+    className: "hero-burn-shape hero-burn-shape--core",
+    d: "M43.2 48.4C48.9 43.5 58.4 45.6 62.1 52.3C65.8 59.1 61.2 68.7 52.4 71.7C44.2 74.5 34.5 70.9 32.7 62.8C31 55.3 37 53.7 43.2 48.4Z",
+  },
+  {
+    key: "upper",
+    className: "hero-burn-shape hero-burn-shape--upper",
+    d: "M45.7 37.6C51.1 33.4 60.3 35.6 63.8 41.2C67.6 47.4 64 56.6 55.6 59.2C48.5 61.5 39.4 58.8 36.6 52.2C33.9 45.7 40.1 42 45.7 37.6Z",
+  },
+  {
+    key: "right",
+    className: "hero-burn-shape hero-burn-shape--right",
+    d: "M62.7 48.7C70.1 47.1 76.7 51.8 78.5 58.7C80.4 66.3 74.2 74.7 65.2 75.9C57.1 77 50.7 71.6 50.4 64.2C50.1 56.8 55.8 50.1 62.7 48.7Z",
+  },
+  {
+    key: "lower",
+    className: "hero-burn-shape hero-burn-shape--lower",
+    d: "M36.7 61.2C43.9 56.3 55 59.3 58.4 67.2C61.7 74.9 55.7 85.2 45.8 87.5C36.1 89.7 25.7 84.1 24.8 74.9C24 67.2 30.6 65.3 36.7 61.2Z",
+  },
+  {
+    key: "left",
+    className: "hero-burn-shape hero-burn-shape--left",
+    d: "M28.8 48.3C34.1 43.2 42.2 45 45.6 51.2C49.1 57.7 45.1 66.1 37.2 68.3C29.8 70.4 21.3 66.7 19.6 59.4C18.1 53 23.7 53.2 28.8 48.3Z",
+  },
+  {
+    key: "side",
+    className: "hero-burn-shape hero-burn-shape--side",
+    d: "M52.4 26.1C62.4 20.9 77.8 25.7 83.6 36.8C90.4 49.9 82 66 66.8 69.9C53.7 73.2 39.5 66.8 35.2 54.2C31.1 42.1 41.9 31.5 52.4 26.1Z",
+  },
+];
+
+function BurnShapeLayer({
+  className,
+  filter,
+}: {
+  className: string;
+  filter?: string;
+}) {
+  return (
+    <g className={className} filter={filter}>
+      {burnShapes.map((shape) => (
+        <path key={shape.key} className={shape.className} d={shape.d} />
+      ))}
+    </g>
+  );
+}
+
 function HeroBurnReveal() {
   return (
     <div className="hero-burn-reveal" aria-hidden="true">
@@ -40,51 +89,44 @@ function HeroBurnReveal() {
           >
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.045 0.065"
-              numOctaves="2"
-              seed="12"
+              baseFrequency="0.052 0.09"
+              numOctaves="3"
+              seed="18"
               result="burnNoise"
             >
               <animate
                 attributeName="baseFrequency"
                 begin="0.12s"
-                dur="2.1s"
-                values="0.045 0.065;0.032 0.052;0.04 0.058"
+                dur="2.3s"
+                values="0.052 0.09;0.038 0.072;0.047 0.082"
                 fill="freeze"
               />
             </feTurbulence>
             <feDisplacementMap
               in="SourceGraphic"
               in2="burnNoise"
-              scale="2.8"
+              scale="3.8"
               xChannelSelector="R"
               yChannelSelector="G"
             />
           </filter>
+          <filter
+            id="hero-burn-warm-blur"
+            x="-30"
+            y="-30"
+            width="160"
+            height="160"
+            filterUnits="userSpaceOnUse"
+            colorInterpolationFilters="sRGB"
+          >
+            <feGaussianBlur stdDeviation="0.8" />
+          </filter>
           <mask id="hero-burn-paper-mask" maskUnits="userSpaceOnUse">
             <rect width="100" height="100" fill="white" />
-            <g
-              className="hero-burn-hole-mask"
+            <BurnShapeLayer
+              className="hero-burn-shapes hero-burn-shapes--mask"
               filter="url(#hero-burn-organic-edge)"
-            >
-              <ellipse cx="43" cy="58" rx="10.6" ry="7.4" fill="black" />
-              <ellipse
-                cx="50"
-                cy="55"
-                rx="5.6"
-                ry="3.9"
-                fill="black"
-                transform="rotate(18 50 55)"
-              />
-              <ellipse
-                cx="37.2"
-                cy="62.3"
-                rx="4.2"
-                ry="3.1"
-                fill="black"
-                transform="rotate(-24 37.2 62.3)"
-              />
-            </g>
+            />
           </mask>
         </defs>
         <rect
@@ -100,46 +142,23 @@ function HeroBurnReveal() {
           fill="url(#hero-paper-grain)"
           mask="url(#hero-burn-paper-mask)"
         />
-        <g
-          className="hero-burn-edge-glow"
+        <circle className="hero-burn-ignition" cx="44" cy="58" r="1.18" />
+        <BurnShapeLayer
+          className="hero-burn-edge hero-burn-edge--glow"
+          filter="url(#hero-burn-warm-blur)"
+        />
+        <BurnShapeLayer
+          className="hero-burn-edge hero-burn-edge--toast"
           filter="url(#hero-burn-organic-edge)"
-        >
-          <ellipse cx="43" cy="58" rx="10.6" ry="7.4" />
-          <ellipse
-            cx="50"
-            cy="55"
-            rx="5.6"
-            ry="3.9"
-            transform="rotate(18 50 55)"
-          />
-          <ellipse
-            cx="37.2"
-            cy="62.3"
-            rx="4.2"
-            ry="3.1"
-            transform="rotate(-24 37.2 62.3)"
-          />
-        </g>
-        <g
-          className="hero-burn-edge-char"
+        />
+        <BurnShapeLayer
+          className="hero-burn-edge hero-burn-edge--char"
           filter="url(#hero-burn-organic-edge)"
-        >
-          <ellipse cx="43" cy="58" rx="10.6" ry="7.4" />
-          <ellipse
-            cx="50"
-            cy="55"
-            rx="5.6"
-            ry="3.9"
-            transform="rotate(18 50 55)"
-          />
-          <ellipse
-            cx="37.2"
-            cy="62.3"
-            rx="4.2"
-            ry="3.1"
-            transform="rotate(-24 37.2 62.3)"
-          />
-        </g>
+        />
+        <BurnShapeLayer
+          className="hero-burn-edge hero-burn-edge--heat"
+          filter="url(#hero-burn-organic-edge)"
+        />
       </svg>
     </div>
   );

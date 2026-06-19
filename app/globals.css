@@ -173,13 +173,16 @@ img {
 }
 
 .hero-burn-reveal {
+  --hero-burn-delay: 120ms;
+  --hero-burn-duration: 2500ms;
   position: absolute;
   inset: -1px;
   z-index: 30;
   pointer-events: none;
   overflow: hidden;
   contain: paint;
-  animation: heroBurnOverlayClean 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
+  animation: heroBurnOverlayClean var(--hero-burn-duration)
+    cubic-bezier(0.22, 1, 0.36, 1) var(--hero-burn-delay) forwards;
   will-change: opacity;
 }
 
@@ -194,50 +197,139 @@ img {
 }
 
 .hero-burn-paper-grain {
-  opacity: 0.5;
+  mix-blend-mode: multiply;
+  opacity: 0.56;
 }
 
-.hero-burn-hole-mask,
-.hero-burn-edge-glow,
-.hero-burn-edge-char {
-  transform-box: view-box;
-  transform-origin: 43% 58%;
-  transform: scale(0.035);
-  animation: heroBurnHoleGrow 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
-  will-change: transform;
+.hero-burn-shapes--mask {
+  filter: url(#hero-burn-organic-edge);
 }
 
-.hero-burn-edge-glow,
-.hero-burn-edge-char {
+.hero-burn-shapes--mask .hero-burn-shape {
+  fill: #000;
+}
+
+.hero-burn-edge {
   fill: none;
+  pointer-events: none;
 }
 
-.hero-burn-edge-glow {
-  opacity: 0;
-  animation:
-    heroBurnHoleGrow 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards,
-    heroBurnWarmFade 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
-}
-
-.hero-burn-edge-glow ellipse {
-  stroke: rgba(232, 132, 52, 0.42);
+.hero-burn-edge .hero-burn-shape {
+  fill: none;
+  stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.6;
   vector-effect: non-scaling-stroke;
 }
 
-.hero-burn-edge-char {
+.hero-burn-edge--glow {
+  animation: heroBurnGlowPresence var(--hero-burn-duration)
+    cubic-bezier(0.22, 1, 0.36, 1) var(--hero-burn-delay) forwards;
+  filter: url(#hero-burn-warm-blur);
+  mix-blend-mode: screen;
   opacity: 0;
-  animation:
-    heroBurnHoleGrow 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards,
-    heroBurnCharFade 2100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms forwards;
 }
 
-.hero-burn-edge-char ellipse {
-  stroke: rgba(34, 20, 12, 0.76);
-  stroke-linejoin: round;
+.hero-burn-edge--glow .hero-burn-shape {
+  stroke: rgba(232, 103, 35, 0.28);
+  stroke-width: 4.8;
+}
+
+.hero-burn-edge--toast {
+  animation: heroBurnToastPresence var(--hero-burn-duration)
+    cubic-bezier(0.22, 1, 0.36, 1) var(--hero-burn-delay) forwards;
+  filter: url(#hero-burn-organic-edge);
+  mix-blend-mode: multiply;
+  opacity: 0;
+}
+
+.hero-burn-edge--toast .hero-burn-shape {
+  stroke: #6b351d;
+  stroke-opacity: 0.72;
+  stroke-width: 2.35;
+}
+
+.hero-burn-edge--char {
+  animation: heroBurnCharPresence var(--hero-burn-duration)
+    cubic-bezier(0.22, 1, 0.36, 1) var(--hero-burn-delay) forwards;
+  filter: url(#hero-burn-organic-edge);
+  mix-blend-mode: multiply;
+  opacity: 0;
+}
+
+.hero-burn-edge--char .hero-burn-shape {
+  stroke: #160d08;
+  stroke-opacity: 0.84;
   stroke-width: 0.78;
-  vector-effect: non-scaling-stroke;
+}
+
+.hero-burn-edge--heat {
+  animation:
+    heroBurnHeatPresence var(--hero-burn-duration)
+      cubic-bezier(0.22, 1, 0.36, 1) var(--hero-burn-delay) forwards,
+    heroBurnHeatTrace 680ms ease-in-out var(--hero-burn-delay) 3 alternate
+      forwards;
+  filter: url(#hero-burn-organic-edge);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+.hero-burn-edge--heat .hero-burn-shape {
+  stroke: rgba(232, 103, 35, 0.38);
+  stroke-dasharray: 2.5 9.4;
+  stroke-linecap: round;
+  stroke-width: 0.95;
+}
+
+.hero-burn-ignition {
+  fill: rgba(232, 103, 35, 0.42);
+  filter: url(#hero-burn-warm-blur);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 44% 58%;
+  animation: heroBurnIgnition var(--hero-burn-duration)
+    cubic-bezier(0.22, 1, 0.36, 1) var(--hero-burn-delay) forwards;
+  will-change: opacity, transform;
+}
+
+.hero-burn-shape {
+  transform-box: view-box;
+  opacity: 0;
+  animation-duration: var(--hero-burn-duration);
+  animation-delay: var(--hero-burn-delay);
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.hero-burn-shape--core {
+  transform-origin: 44% 58%;
+  animation-name: heroBurnCoreGrow;
+}
+
+.hero-burn-shape--upper {
+  transform-origin: 51% 49%;
+  animation-name: heroBurnUpperGrow;
+}
+
+.hero-burn-shape--right {
+  transform-origin: 64% 62%;
+  animation-name: heroBurnRightGrow;
+}
+
+.hero-burn-shape--lower {
+  transform-origin: 42% 73%;
+  animation-name: heroBurnLowerGrow;
+}
+
+.hero-burn-shape--left {
+  transform-origin: 33% 58%;
+  animation-name: heroBurnLeftGrow;
+}
+
+.hero-burn-shape--side {
+  transform-origin: 58% 48%;
+  animation-name: heroBurnSideGrow;
 }
 
 .hero-intro-copy {
@@ -249,8 +341,11 @@ img {
 
 @keyframes heroBurnOverlayClean {
   0%,
-  88% {
+  74% {
     opacity: 1;
+  }
+  88% {
+    opacity: 0.92;
   }
   100% {
     opacity: 0;
@@ -258,61 +353,257 @@ img {
   }
 }
 
-@keyframes heroBurnHoleGrow {
+@keyframes heroBurnIgnition {
   0%,
-  7% {
-    transform: scale(0.035);
+  5% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  8% {
+    opacity: 0.68;
+    transform: scale(1);
   }
   18% {
-    transform: scale(0.38);
+    opacity: 0.24;
+    transform: scale(2.8);
   }
-  38% {
-    transform: scale(1.35);
-  }
-  64% {
-    transform: scale(3.35);
-  }
-  86% {
-    transform: scale(6.4);
-  }
+  28%,
   100% {
-    transform: scale(8.8);
+    opacity: 0;
+    transform: scale(4.2);
   }
 }
 
-@keyframes heroBurnCharFade {
+@keyframes heroBurnCoreGrow {
+  0%,
+  7% {
+    opacity: 0;
+    transform: rotate(-8deg) scale(0.01, 0.008);
+  }
+  8% {
+    opacity: 1;
+    transform: rotate(-7deg) scale(0.055, 0.04);
+  }
+  18% {
+    opacity: 1;
+    transform: rotate(5deg) scale(0.54, 0.39);
+  }
+  45% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(1.72, 1.22);
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(2deg) scale(3.9, 2.92);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-1deg) scale(7.8, 5.8);
+  }
+}
+
+@keyframes heroBurnUpperGrow {
+  0%,
+  11% {
+    opacity: 0;
+    transform: rotate(14deg) scale(0.01, 0.008);
+  }
+  20% {
+    opacity: 1;
+    transform: rotate(-10deg) scale(0.44, 0.28);
+  }
+  45% {
+    opacity: 1;
+    transform: rotate(6deg) scale(1.42, 0.96);
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(-7deg) scale(3.28, 2.34);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(3deg) scale(6.4, 4.5);
+  }
+}
+
+@keyframes heroBurnRightGrow {
+  0%,
+  14% {
+    opacity: 0;
+    transform: rotate(-11deg) scale(0.012, 0.01);
+  }
+  22% {
+    opacity: 1;
+    transform: rotate(8deg) scale(0.38, 0.32);
+  }
+  45% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(1.28, 1.24);
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(7deg) scale(3.2, 3.05);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-4deg) scale(5.8, 5.7);
+  }
+}
+
+@keyframes heroBurnLowerGrow {
+  0%,
+  13% {
+    opacity: 0;
+    transform: rotate(9deg) scale(0.012, 0.01);
+  }
+  22% {
+    opacity: 1;
+    transform: rotate(-6deg) scale(0.46, 0.32);
+  }
+  45% {
+    opacity: 1;
+    transform: rotate(5deg) scale(1.46, 1.06);
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(-5deg) scale(3.5, 2.74);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(2deg) scale(6.7, 5.1);
+  }
+}
+
+@keyframes heroBurnLeftGrow {
+  0%,
+  17% {
+    opacity: 0;
+    transform: rotate(-18deg) scale(0.01, 0.008);
+  }
+  25% {
+    opacity: 1;
+    transform: rotate(12deg) scale(0.35, 0.26);
+  }
+  48% {
+    opacity: 1;
+    transform: rotate(-8deg) scale(1.16, 0.9);
+  }
+  75% {
+    opacity: 1;
+    transform: rotate(5deg) scale(2.88, 2.22);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-3deg) scale(5.9, 4.6);
+  }
+}
+
+@keyframes heroBurnSideGrow {
+  0%,
+  24% {
+    opacity: 0;
+    transform: rotate(12deg) scale(0.01, 0.006);
+  }
+  38% {
+    opacity: 0.72;
+    transform: rotate(-8deg) scale(0.7, 0.45);
+  }
+  62% {
+    opacity: 1;
+    transform: rotate(4deg) scale(1.9, 1.25);
+  }
+  84% {
+    opacity: 1;
+    transform: rotate(-5deg) scale(4.2, 2.9);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(2deg) scale(7.4, 5.2);
+  }
+}
+
+@keyframes heroBurnCharPresence {
   0%,
   8% {
     opacity: 0;
   }
   18% {
-    opacity: 0.85;
+    opacity: 0.72;
   }
   78% {
-    opacity: 0.78;
+    opacity: 0.72;
   }
   92% {
-    opacity: 0.3;
+    opacity: 0.22;
   }
   100% {
     opacity: 0;
   }
 }
 
-@keyframes heroBurnWarmFade {
+@keyframes heroBurnToastPresence {
   0%,
   8% {
     opacity: 0;
   }
   20% {
-    opacity: 0.45;
+    opacity: 0.78;
   }
-  72% {
-    opacity: 0.32;
+  76% {
+    opacity: 0.66;
   }
-  92%,
+  94% {
+    opacity: 0.16;
+  }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes heroBurnGlowPresence {
+  0%,
+  8% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.48;
+  }
+  60% {
+    opacity: 0.3;
+  }
+  86% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes heroBurnHeatPresence {
+  0%,
+  12% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.34;
+  }
+  46% {
+    opacity: 0.22;
+  }
+  78% {
+    opacity: 0.12;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes heroBurnHeatTrace {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -20;
   }
 }
 
@@ -506,24 +797,26 @@ img {
 }
 
 @media (max-width: 767px) {
-  .hero-burn-reveal,
-  .hero-burn-hole-mask,
-  .hero-burn-edge-glow,
-  .hero-burn-edge-char {
-    animation-duration: 1600ms;
+  .hero-burn-reveal {
+    --hero-burn-delay: 80ms;
+    --hero-burn-duration: 1900ms;
   }
 
-  .hero-burn-edge-glow {
-    opacity: 0;
-    filter: none;
+  .hero-burn-edge--heat {
+    display: none;
   }
 
-  .hero-burn-edge-glow ellipse {
-    stroke-width: 1.2;
+  .hero-burn-edge--glow .hero-burn-shape {
+    stroke-opacity: 0.72;
+    stroke-width: 3.4;
   }
 
-  .hero-burn-edge-char ellipse {
-    stroke-width: 0.62;
+  .hero-burn-edge--toast .hero-burn-shape {
+    stroke-width: 1.8;
+  }
+
+  .hero-burn-edge--char .hero-burn-shape {
+    stroke-width: 0.58;
   }
 
   .hero-burn-paper-grain {

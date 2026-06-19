@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 type InstagramVideoMomentProps = {
@@ -15,6 +16,9 @@ export function InstagramVideoMoment({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [hasPlaybackFailed, setHasPlaybackFailed] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -43,11 +47,18 @@ export function InstagramVideoMoment({
     if (!video) return;
 
     if (isVisible && !reducedMotion) {
-      void video.play().catch(() => undefined);
+      void video.play().catch(() => {
+        setIsVideoPlaying(false);
+        setHasPlaybackFailed(true);
+      });
     } else {
       video.pause();
+      setIsVideoPlaying(false);
     }
   }, [isVisible, reducedMotion]);
+
+  const shouldShowVideo =
+    isVideoReady && isVideoPlaying && !hasPlaybackFailed;
 
   return (
     <section
@@ -66,17 +77,37 @@ export function InstagramVideoMoment({
           </h2>
           <div className="mt-4 h-px w-14 bg-[var(--torii-red)]" />
         </div>
-        <div className="relative ml-auto aspect-[9/16] w-full max-w-[192px] overflow-hidden rounded-[24px] bg-transparent shadow-[0_16px_36px_rgba(16,16,16,0.16)]">
+        <div className="relative ml-auto aspect-[9/16] w-full max-w-[192px] overflow-hidden rounded-[24px] bg-neutral-950 shadow-[0_16px_36px_rgba(16,16,16,0.16)]">
+          <Image
+            src={posterSrc}
+            alt=""
+            fill
+            sizes="192px"
+            className="scale-[1.03] object-cover object-center"
+          />
           <video
             ref={videoRef}
             muted
             loop
             playsInline
             preload="metadata"
-            poster={posterSrc}
-            className="block h-full w-full scale-[1.03] object-cover object-center"
+            className={`absolute inset-0 h-full w-full scale-[1.03] object-cover object-center transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              shouldShowVideo ? "opacity-100" : "opacity-0"
+            }`}
             controls={false}
             disablePictureInPicture
+            onLoadedData={() => setIsVideoReady(true)}
+            onCanPlay={() => setIsVideoReady(true)}
+            onPlaying={() => {
+              setIsVideoReady(true);
+              setIsVideoPlaying(true);
+              setHasPlaybackFailed(false);
+            }}
+            onPause={() => setIsVideoPlaying(false)}
+            onError={() => {
+              setIsVideoPlaying(false);
+              setHasPlaybackFailed(true);
+            }}
           >
             <source src={videoSrc} type="video/mp4" />
           </video>

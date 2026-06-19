@@ -3,6 +3,14 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
+type VideoSlot = "desktop" | "mobile";
+
+type VideoStatus = {
+  isVideoReady: boolean;
+  isVideoPlaying: boolean;
+  hasPlaybackFailed: boolean;
+};
+
 type ScrollExpandMediaProps = {
   mediaSrc: string;
   mobileMediaSrc?: string;
@@ -29,6 +37,54 @@ export default function ScrollExpandMedia({
   const mobileVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [videoStatus, setVideoStatus] = useState<Record<VideoSlot, VideoStatus>>(
+    {
+      desktop: {
+        isVideoReady: false,
+        isVideoPlaying: false,
+        hasPlaybackFailed: false,
+      },
+      mobile: {
+        isVideoReady: false,
+        isVideoPlaying: false,
+        hasPlaybackFailed: false,
+      },
+    },
+  );
+
+  const setSlotStatus = (
+    slot: VideoSlot,
+    status: Partial<VideoStatus>,
+  ) => {
+    setVideoStatus((current) => ({
+      ...current,
+      [slot]: {
+        ...current[slot],
+        ...status,
+      },
+    }));
+  };
+
+  const markVideoReady = (slot: VideoSlot) => {
+    setSlotStatus(slot, {
+      isVideoReady: true,
+    });
+  };
+
+  const markVideoPlaying = (slot: VideoSlot) => {
+    setSlotStatus(slot, {
+      isVideoReady: true,
+      isVideoPlaying: true,
+      hasPlaybackFailed: false,
+    });
+  };
+
+  const hideVideo = (slot: VideoSlot, hasPlaybackFailed = false) => {
+    setSlotStatus(slot, {
+      isVideoPlaying: false,
+      hasPlaybackFailed,
+    });
+  };
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -53,21 +109,34 @@ export default function ScrollExpandMedia({
   }, []);
 
   useEffect(() => {
-    const videos = [desktopVideoRef.current, mobileVideoRef.current].filter(
-      Boolean,
-    ) as HTMLVideoElement[];
+    const videos: Array<[HTMLVideoElement | null, VideoSlot]> = [
+      [desktopVideoRef.current, "desktop"],
+      [mobileVideoRef.current, "mobile"],
+    ];
 
-    videos.forEach((video) => {
+    videos.forEach(([video, slot]) => {
+      if (!video) return;
+
       if (isVisible && !reducedMotion) {
-        void video.play().catch(() => undefined);
+        void video.play().catch(() => hideVideo(slot, true));
       } else {
         video.pause();
+        hideVideo(slot);
       }
     });
   }, [isVisible, reducedMotion]);
 
-  const activeVideoSrc = mobileMediaSrc ?? mediaSrc;
-  const activePoster = mobilePosterSrc ?? posterSrc;
+  const desktopPoster = posterSrc ?? bgImageSrc;
+  const mobilePoster = mobilePosterSrc ?? desktopPoster;
+  const mobileVideoSrc = mobileMediaSrc ?? mediaSrc;
+  const shouldShowDesktopVideo =
+    videoStatus.desktop.isVideoReady &&
+    videoStatus.desktop.isVideoPlaying &&
+    !videoStatus.desktop.hasPlaybackFailed;
+  const shouldShowMobileVideo =
+    videoStatus.mobile.isVideoReady &&
+    videoStatus.mobile.isVideoPlaying &&
+    !videoStatus.mobile.hasPlaybackFailed;
 
   return (
     <section
@@ -106,37 +175,63 @@ export default function ScrollExpandMedia({
               </p>
             </div>
 
-            <div className="hidden aspect-[9/16] w-full max-w-[338px] justify-self-end overflow-hidden rounded-[26px] bg-transparent shadow-[0_28px_75px_rgba(0,0,0,0.24)] md:block">
+            <div className="relative hidden aspect-[9/16] w-full max-w-[338px] justify-self-end overflow-hidden rounded-[26px] bg-neutral-950 shadow-[0_28px_75px_rgba(0,0,0,0.24)] md:block">
+              <Image
+                src={desktopPoster}
+                alt=""
+                fill
+                sizes="338px"
+                className="scale-[1.03] object-cover object-center"
+              />
               <video
-                key={activeVideoSrc}
+                key={mediaSrc}
                 ref={desktopVideoRef}
                 muted
                 loop
                 playsInline
                 preload="metadata"
-                poster={activePoster}
-                className="block h-full w-full scale-[1.03] object-cover object-center"
+                className={`absolute inset-0 h-full w-full scale-[1.03] object-cover object-center transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  shouldShowDesktopVideo ? "opacity-100" : "opacity-0"
+                }`}
                 controls={false}
                 disablePictureInPicture
+                onLoadedData={() => markVideoReady("desktop")}
+                onCanPlay={() => markVideoReady("desktop")}
+                onPlaying={() => markVideoPlaying("desktop")}
+                onPause={() => hideVideo("desktop")}
+                onError={() => hideVideo("desktop", true)}
               >
-                <source src={activeVideoSrc} type="video/mp4" />
+                <source src={mediaSrc} type="video/mp4" />
               </video>
             </div>
 
-            <div className="mx-auto aspect-[9/16] w-full max-w-[270px] overflow-hidden rounded-[24px] bg-transparent shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:hidden">
+            <div className="relative mx-auto aspect-[9/16] w-full max-w-[270px] overflow-hidden rounded-[24px] bg-neutral-950 shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:hidden">
+              <Image
+                src={mobilePoster}
+                alt=""
+                fill
+                sizes="270px"
+                className="scale-[1.03] object-cover object-center"
+              />
               <video
-                key={activeVideoSrc}
+                key={mobileVideoSrc}
                 ref={mobileVideoRef}
                 muted
                 loop
                 playsInline
                 preload="metadata"
-                poster={activePoster}
-                className="block h-full w-full scale-[1.03] object-cover object-center"
+                className={`absolute inset-0 h-full w-full scale-[1.03] object-cover object-center transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  shouldShowMobileVideo ? "opacity-100" : "opacity-0"
+                }`}
                 controls={false}
                 disablePictureInPicture
+                onLoadedData={() => markVideoReady("mobile")}
+                onCanPlay={() => markVideoReady("mobile")}
+                onPlaying={() => markVideoPlaying("mobile")}
+                onPause={() => hideVideo("mobile")}
+                onError={() => hideVideo("mobile", true)}
               >
-                <source src={activeVideoSrc} type="video/mp4" />
+                <source src={mobileVideoSrc} type="video/mp4" />
               </video>
             </div>
           </div>
