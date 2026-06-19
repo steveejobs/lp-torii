@@ -42,7 +42,10 @@ function ReviewRow({
     >
       <div className="flex gap-3">
         {reviews.map((review, index) => (
-          <ReviewCard key={`${review.text}-${index}-${direction}`} review={review} />
+          <ReviewCard
+            key={`${review.text}-${index}-${direction}`}
+            review={review}
+          />
         ))}
       </div>
       <div className="flex gap-3" aria-hidden="true">
@@ -98,12 +101,16 @@ export function InstagramTestimonialsMarquee({
           Quem conhece, volta.
         </h2>
         <p className="mt-1 text-sm font-bold leading-6 text-neutral-600">
-          Comentários curtos sobre a experiência no Torii.
+          Resumo dos pontos que clientes costumam destacar.
         </p>
       </div>
       <div className="mt-4 grid gap-3">
         <ReviewRow reviews={firstRow} direction="left" playState={playState} />
-        <ReviewRow reviews={secondRow} direction="right" playState={playState} />
+        <ReviewRow
+          reviews={secondRow}
+          direction="right"
+          playState={playState}
+        />
       </div>
     </section>
   );

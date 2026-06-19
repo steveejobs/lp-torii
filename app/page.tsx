@@ -206,8 +206,8 @@ export default function Home() {
                 Quem conhece, volta.
               </h2>
               <p className="mt-5 max-w-2xl text-base font-bold leading-7 text-neutral-600 md:text-lg">
-                Comida bem servida, ambiente agradável e atendimento à noite
-                para jantar no salão, pedir em casa ou retirar no caminho.
+                Clientes destacam comida bem servida, ambiente agradável e
+                atendimento à noite.
               </p>
             </Reveal>
           </div>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { foodGalleryMedia } from "@/data/torii-media";
+import { mainFoodGalleryMedia } from "@/data/torii-media";
 
 type GalleryItem = {
   src: string;
@@ -102,7 +102,8 @@ export function FoodGallerySection() {
   const [reducedMotion, setReducedMotion] = useState(false);
 
   const galleryItems = useMemo<GalleryItem[]>(
-    () => foodGalleryMedia.map((item) => ({ src: item.src, alt: item.alt })),
+    () =>
+      mainFoodGalleryMedia.map((item) => ({ src: item.src, alt: item.alt })),
     [],
   );
 

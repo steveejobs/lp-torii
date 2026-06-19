@@ -6,7 +6,7 @@ import { InstagramVideoMoment } from "@/components/InstagramVideoMoment";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { toriiReviews } from "@/data/torii-reviews";
 import {
-  foodGalleryMedia,
+  instagramFoodGalleryMedia,
   logoMedia,
   scrollExperienceMedia,
 } from "@/data/torii-media";
@@ -51,14 +51,8 @@ const whatsappLinks = {
   ),
 };
 
-const instagramGalleryMedia = [
-  foodGalleryMedia[9],
-  foodGalleryMedia[2],
-  foodGalleryMedia[5],
-  foodGalleryMedia[11],
-  foodGalleryMedia[14],
-  foodGalleryMedia[17],
-];
+const nightOptions = ["Rodízio no salão", "Delivery", "Retirada"];
+const instagramTestimonials = toriiReviews.slice(0, 8);
 
 function IconRoute() {
   return (
@@ -162,9 +156,19 @@ export default function InstagramLinksPage() {
             <span className="mr-2 text-[var(--torii-red)]">★★★★★</span>
             4,4 no Google · 382 avaliações
           </p>
+          <div className="mt-3 flex flex-wrap justify-center gap-2">
+            {nightOptions.map((option) => (
+              <span
+                key={option}
+                className="rounded-full border border-black/10 bg-white/78 px-3 py-1.5 text-[0.68rem] font-black uppercase text-neutral-700"
+              >
+                {option}
+              </span>
+            ))}
+          </div>
         </header>
 
-        <InstagramMediaMarquee media={instagramGalleryMedia} />
+        <InstagramMediaMarquee media={instagramFoodGalleryMedia} />
 
         <nav className="mt-5 grid gap-3" aria-label="Links principais">
           <LinkButton
@@ -199,7 +203,7 @@ export default function InstagramLinksPage() {
           posterSrc={scrollExperienceMedia.background.src}
         />
 
-        <InstagramTestimonialsMarquee reviews={toriiReviews} />
+        <InstagramTestimonialsMarquee reviews={instagramTestimonials} />
 
         <section
           className="ig-rise mt-5 rounded-[24px] bg-neutral-950 p-4 text-white shadow-[0_14px_34px_rgba(16,16,16,0.12)]"

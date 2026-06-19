@@ -1,9 +1,9 @@
 import {
   facadeMedia,
-  foodGalleryMedia,
   homeHeroImage,
   locationMedia,
   logoMedia,
+  mainFoodGalleryMedia,
   scrollExperienceMedia,
 } from "@/data/torii-media";
 
@@ -53,7 +53,7 @@ export const images = {
   logo: logoMedia.src,
   fachada: facadeMedia.src,
   heroIntro: homeHeroImage.src,
-  foodGallery: foodGalleryMedia.map((item) => item.src),
+  foodGallery: mainFoodGalleryMedia.map((item) => item.src),
   scrollExperienceBg: scrollExperienceMedia.background.src,
   scrollMainVideo: scrollExperienceMedia.video,
   scrollMainVideoMobile: scrollExperienceMedia.mobileVideo,
