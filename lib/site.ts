@@ -1,9 +1,10 @@
 import {
   facadeMedia,
+  foodGalleryImages,
   homeHeroImage,
+  internalEnvironmentMedia,
   locationMedia,
   logoMedia,
-  mainFoodGalleryMedia,
   scrollExperienceMedia,
 } from "@/data/torii-media";
 
@@ -51,9 +52,10 @@ export const navLinks = [
 
 export const images = {
   logo: logoMedia.src,
+  ambienteInterno: internalEnvironmentMedia.src,
   fachada: facadeMedia.src,
   heroIntro: homeHeroImage.src,
-  foodGallery: mainFoodGalleryMedia.map((item) => item.src),
+  foodGallery: foodGalleryImages.map((item) => item.src),
   scrollExperienceBg: scrollExperienceMedia.background.src,
   scrollMainVideo: scrollExperienceMedia.video,
   scrollMainVideoMobile: scrollExperienceMedia.mobileVideo,

@@ -15,13 +15,23 @@ export const facadeMedia = {
   alt: "Fachada preta do Torii Restaurante Japones a noite",
 } satisfies ToriiMediaAsset;
 
+export const internalEnvironmentMedia = {
+  // ambiente-interno-torii.png - usado apenas em secoes de ambiente/atmosfera.
+  src: "/torii/ambiente-interno-torii.png",
+  alt: "Ambiente interno do Torii com luz quente",
+} satisfies ToriiMediaAsset;
+
 export const homeHeroImage = {
   // Uso exclusivo: primeira hero / Home 1. Nao usar em outras secoes.
   src: "/torii/imagem hero.jpg",
   alt: "Preparo de sushi no Torii com acabamento delicado",
 } satisfies ToriiMediaAsset;
 
+export const heroImage = homeHeroImage;
 export const heroMedia = [homeHeroImage] satisfies ToriiMediaAsset[];
+export const environmentImages = [
+  internalEnvironmentMedia,
+] satisfies ToriiMediaAsset[];
 
 export const scrollExperienceMedia = {
   // scroll-experience-bg.jpg - usado apenas como fundo da experiencia de scroll.
@@ -35,7 +45,7 @@ export const scrollExperienceMedia = {
   mobileVideo: "/torii/scroll-main-video-mobile.mp4",
 } as const;
 
-export const foodGalleryMedia = [
+const foodGalleryCandidates = [
   // gallery-food-01.png - usado apenas na galeria.
   { src: "/torii/gallery-food-01.png", alt: "Combinado de sushi do Torii" },
   // gallery-food-02.png - usado apenas na galeria.
@@ -107,27 +117,18 @@ export const foodGalleryMedia = [
   },
   // gallery-food-19.jpg - usado apenas na galeria.
   { src: "/torii/gallery-food-19.jpg", alt: "Prato especial da cozinha Torii" },
-  // gallery-food-20.jpg - antes hero-chef-preparo.jpg; usado apenas na galeria.
-  {
-    src: "/torii/gallery-food-20.jpg",
-    alt: "Preparo de sushi na cozinha Torii",
-  },
 ] satisfies ToriiMediaAsset[];
 
-export const mainFoodGalleryMedia = [
-  foodGalleryMedia[0],
-  foodGalleryMedia[1],
-  foodGalleryMedia[2],
-  foodGalleryMedia[4],
-  foodGalleryMedia[5],
-  foodGalleryMedia[6],
-  foodGalleryMedia[7],
-  foodGalleryMedia[9],
-  foodGalleryMedia[10],
-  foodGalleryMedia[11],
-  foodGalleryMedia[12],
-  foodGalleryMedia[13],
-] satisfies ToriiMediaAsset[];
+function uniqueMediaBySrc(items: readonly ToriiMediaAsset[]) {
+  return items.filter(
+    (item, index) =>
+      items.findIndex((candidate) => candidate.src === item.src) === index,
+  );
+}
+
+export const foodGalleryImages = uniqueMediaBySrc(foodGalleryCandidates);
+export const foodGalleryMedia = foodGalleryImages;
+export const mainFoodGalleryMedia = foodGalleryImages;
 
 export const instagramFoodGalleryMedia = [
   foodGalleryMedia[1],
@@ -140,19 +141,17 @@ export const instagramFoodGalleryMedia = [
   foodGalleryMedia[13],
 ] satisfies ToriiMediaAsset[];
 
-export const locationMedia = [
-  {
-    // fachada-torii.png - uso 2 de 2 da fachada no site.
-    src: "/torii/fachada-torii.png",
-    alt: "Fachada do Torii para reconhecer a chegada",
-  },
-] satisfies ToriiMediaAsset[];
+export const locationImage = {
+  ...facadeMedia,
+  alt: "Fachada do Torii para reconhecer a chegada",
+} satisfies ToriiMediaAsset;
+export const locationMedia = [locationImage] satisfies ToriiMediaAsset[];
 
 export const mediaBySection = {
   hero: [homeHeroImage],
-  ambiente: [facadeMedia],
+  ambiente: environmentImages,
   video: [scrollExperienceMedia.background],
-  galeria: mainFoodGalleryMedia,
+  galeria: foodGalleryImages,
   localizacao: locationMedia,
   instagram: instagramFoodGalleryMedia,
 } as const;

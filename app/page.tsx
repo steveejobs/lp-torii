@@ -8,6 +8,10 @@ import { ScrollExperienceFeature } from "@/components/ScrollExperienceFeature";
 import { SectionIntro } from "@/components/SectionIntro";
 import { SocialIconLinks } from "@/components/SocialIconLinks";
 import {
+  internalEnvironmentMedia,
+  locationImage,
+} from "@/data/torii-media";
+import {
   ADDRESS,
   GOOGLE_MAPS_URL,
   INSTAGRAM_URL,
@@ -46,7 +50,7 @@ export default function Home() {
       <main id="topo" className="overflow-hidden pt-16 md:pt-20">
         <HeroInteractiveIntro />
 
-        <section className="relative min-h-[calc(100svh-64px)] border-b border-black/10 bg-[#fffdf9] py-10 md:min-h-[calc(100svh-80px)] md:py-16">
+        <section className="relative border-b border-black/10 bg-[#fffdf9] py-10 md:min-h-[calc(100svh-80px)] md:py-16">
           <div className="absolute left-[-72px] top-20 h-40 w-40 rounded-full border border-red-700/15 md:left-10 md:h-64 md:w-64" />
           <div className="absolute right-[-80px] top-24 h-44 w-44 rounded-full bg-[var(--torii-red)]/8 md:right-12 md:h-72 md:w-72" />
 
@@ -90,7 +94,9 @@ export default function Home() {
               </div>
             </div>
 
-            <HeroMotionPlaceholder />
+            <div className="hidden md:block">
+              <HeroMotionPlaceholder />
+            </div>
           </div>
         </section>
 
@@ -168,8 +174,8 @@ export default function Home() {
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-1">
                 <div className="image-soft aspect-[16/9] md:aspect-[16/10]">
                   <Image
-                    src={images.fachada}
-                    alt="Fachada preta do Torii"
+                    src={internalEnvironmentMedia.src}
+                    alt={internalEnvironmentMedia.alt}
                     width={1672}
                     height={941}
                     loading="lazy"
@@ -272,9 +278,9 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative min-h-[340px] overflow-hidden rounded-lg border border-black/10 bg-neutral-900 shadow-[0_22px_60px_rgba(16,16,16,0.1)] md:min-h-[430px]">
+            <div className="relative h-[250px] w-full overflow-hidden rounded-[24px] border border-black/10 bg-neutral-900 shadow-[0_22px_60px_rgba(16,16,16,0.1)] md:h-auto md:min-h-[430px] md:rounded-lg">
               <Image
-                src={images.locationFacade}
+                src={locationImage.src}
                 alt="Fachada do Torii à noite"
                 fill
                 sizes="(max-width: 768px) 92vw, 48vw"

@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { mainFoodGalleryMedia } from "@/data/torii-media";
+import { foodGalleryImages } from "@/data/torii-media";
 
 type GalleryItem = {
   src: string;
@@ -30,7 +29,7 @@ function GalleryCard({
     <figure
       className={`group relative shrink-0 overflow-hidden rounded-[18px] bg-neutral-950 shadow-[0_18px_42px_rgba(16,16,16,0.09)] ${
         compact
-          ? "h-[220px] w-[72vw]"
+          ? "h-[220px] w-[180px]"
           : index % 5 === 0
             ? "h-[250px] w-[360px]"
             : index % 3 === 0
@@ -42,12 +41,8 @@ function GalleryCard({
         src={item.src}
         alt={item.alt}
         fill
-        sizes={
-          compact
-            ? "(max-width: 768px) 72vw, 300px"
-            : "(max-width: 768px) 72vw, 360px"
-        }
-        quality={88}
+        sizes="(max-width: 768px) 180px, 320px"
+        quality={82}
         loading="lazy"
         className="h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:group-hover:scale-[1.02]"
       />
@@ -59,20 +54,21 @@ function GalleryCard({
 function GalleryLoop({
   items,
   direction,
-  animationState,
   indexOffset = 0,
+  compact = false,
 }: {
   items: GalleryItem[];
   direction: "left" | "right";
-  animationState: "running" | "paused";
   indexOffset?: number;
+  compact?: boolean;
 }) {
   return (
     <div
       className={`gallery-marquee ${
+        compact ? "gallery-marquee-mobile" : "gallery-marquee-desktop"
+      } ${
         direction === "left" ? "gallery-marquee-left" : "gallery-marquee-right"
       } flex w-max gap-4`}
-      style={{ animationPlayState: animationState }}
     >
       <div className="flex gap-4">
         {items.map((item, index) => (
@@ -80,6 +76,7 @@ function GalleryLoop({
             key={`${item.src}-${direction}`}
             item={item}
             index={index + indexOffset}
+            compact={compact}
           />
         ))}
       </div>
@@ -89,6 +86,7 @@ function GalleryLoop({
             key={`${item.src}-${direction}-loop`}
             item={item}
             index={index + indexOffset}
+            compact={compact}
           />
         ))}
       </div>
@@ -97,54 +95,18 @@ function GalleryLoop({
 }
 
 export function FoodGallerySection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  const galleryItems = useMemo<GalleryItem[]>(
-    () =>
-      mainFoodGalleryMedia.map((item) => ({ src: item.src, alt: item.alt })),
-    [],
-  );
+  const galleryItems = foodGalleryImages.map((item) => ({
+    src: item.src,
+    alt: item.alt,
+  }));
 
   const midpoint = Math.ceil(galleryItems.length / 2);
   const firstRow = galleryItems.slice(0, midpoint);
   const secondRow = galleryItems.slice(midpoint);
-  const animationState = isVisible && !reducedMotion ? "running" : "paused";
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const reducedQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    const syncReducedMotion = () => {
-      setReducedMotion(reducedQuery.matches);
-      if (reducedQuery.matches) setIsVisible(true);
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.16, rootMargin: "0px 0px -8% 0px" },
-    );
-
-    observer.observe(section);
-    reducedQuery.addEventListener("change", syncReducedMotion);
-    syncReducedMotion();
-
-    return () => {
-      observer.disconnect();
-      reducedQuery.removeEventListener("change", syncReducedMotion);
-    };
-  }, []);
-
   return (
     <section
       id="destaques"
-      ref={sectionRef}
-      className="overflow-hidden bg-[#f7f2ec] pb-12 pt-10 md:pb-16 md:pt-12"
+      className="overflow-hidden bg-[#f7f2ec] py-10 md:pb-16 md:pt-12"
     >
       <div className="container-page">
         <div className="grid gap-7 md:grid-cols-[0.82fr_1.18fr] md:items-end">
@@ -161,29 +123,19 @@ export function FoodGallerySection() {
         </div>
       </div>
 
-      <div
-        className={`mt-10 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isVisible || reducedMotion
-            ? "translate-y-0 opacity-100"
-            : "translate-y-5 opacity-0"
-        }`}
-      >
-        <div className="no-scrollbar flex gap-3 overflow-x-auto px-4 pb-2 md:hidden">
-          {galleryItems.map((item, index) => (
-            <GalleryCard key={item.src} item={item} index={index} compact />
-          ))}
+      <div className="mt-8 md:mt-10">
+        <div className="overflow-hidden md:hidden">
+          <GalleryLoop items={galleryItems} direction="left" compact />
         </div>
 
         <div className="hidden space-y-4 md:block">
           <GalleryLoop
             items={firstRow}
             direction="left"
-            animationState={animationState}
           />
           <GalleryLoop
             items={secondRow}
             direction="right"
-            animationState={animationState}
             indexOffset={2}
           />
         </div>

@@ -141,12 +141,12 @@ export default function ScrollExpandMedia({
   return (
     <section
       ref={sectionRef}
-      className="relative isolate overflow-hidden bg-[#f7f2ec] px-4 pb-8 pt-10 md:px-0 md:pb-10 md:pt-14"
+      className="relative isolate overflow-hidden bg-[#f7f2ec] px-4 pb-4 pt-10 md:px-0 md:pb-10 md:pt-14"
       aria-label={title}
     >
       <div className="container-page">
         <div
-          className={`relative isolate overflow-hidden rounded-lg border border-black/10 bg-neutral-950 shadow-[0_24px_70px_rgba(16,16,16,0.12)] transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`relative isolate overflow-hidden rounded-[24px] border border-black/10 bg-neutral-950 shadow-[0_24px_70px_rgba(16,16,16,0.12)] transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] md:rounded-lg ${
             isVisible || reducedMotion
               ? "translate-y-0 scale-100 opacity-100"
               : "translate-y-5 scale-[0.985] opacity-0"
@@ -162,7 +162,7 @@ export default function ScrollExpandMedia({
           />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.7),rgba(0,0,0,0.36)_48%,rgba(0,0,0,0.52))]" />
 
-          <div className="relative z-10 grid gap-6 p-4 md:grid-cols-[1fr_390px] md:items-center md:p-8 lg:grid-cols-[1fr_430px] lg:p-10">
+          <div className="relative z-10 grid gap-5 p-5 md:grid-cols-[1fr_390px] md:items-center md:gap-6 md:p-8 lg:grid-cols-[1fr_430px] lg:p-10">
             <div className="text-white">
               <p className="text-xs font-black uppercase text-white/76">
                 {date}
@@ -205,7 +205,7 @@ export default function ScrollExpandMedia({
               </video>
             </div>
 
-            <div className="relative mx-auto aspect-[9/16] w-full max-w-[270px] overflow-hidden rounded-[24px] bg-neutral-950 shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:hidden">
+            <div className="relative mx-auto aspect-[9/16] w-full max-w-[240px] overflow-hidden rounded-[24px] bg-neutral-950 shadow-[0_18px_46px_rgba(0,0,0,0.2)] md:hidden">
               <Image
                 src={mobilePoster}
                 alt=""
