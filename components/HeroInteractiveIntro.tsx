@@ -3,34 +3,19 @@ import { images } from "@/lib/site";
 
 const revealShapes = [
   {
-    key: "core",
-    className: "hero-organic-shape hero-organic-shape--core",
-    d: "M39.8 49.8C46.3 43.9 58.2 45.7 63.6 52.9C69.1 60.3 64 70.8 53.9 73.9C44.7 76.7 33.5 72.4 31.3 63.6C29.6 56.7 34.2 54.9 39.8 49.8Z",
-  },
-  {
-    key: "upper",
-    className: "hero-organic-shape hero-organic-shape--upper",
-    d: "M47.3 32.2C54.8 27.8 66.5 31.2 70.8 39.4C75.2 47.9 68.5 58.6 56.8 60.8C46.7 62.8 36.8 57.4 35.8 49.1C34.9 41.4 40.7 36.1 47.3 32.2Z",
+    key: "main",
+    className: "hero-organic-shape hero-organic-shape--main",
+    d: "M35.3 30.7C48.8 20.6 69.8 25.4 78.4 39.7C87.2 54.5 77.6 75.2 57.3 81.6C39.8 87.1 20.7 78.9 16.1 63.1C12.2 49.7 24.2 39 35.3 30.7Z",
   },
   {
     key: "right",
     className: "hero-organic-shape hero-organic-shape--right",
-    d: "M66.1 45.3C75.1 43.9 83.4 50.1 84.4 59.5C85.4 69.7 76.3 78.2 64.2 77.3C54.1 76.5 48.4 68.8 50.7 60.4C52.8 52.6 58.8 46.5 66.1 45.3Z",
+    d: "M62.5 19.8C79.4 16.7 94.2 30.5 95.1 49.6C96 68.6 80.8 86.1 61.2 84.3C44.8 82.8 35.8 69.2 40 53.7C44 39.3 49.6 22.2 62.5 19.8Z",
   },
   {
     key: "lower",
     className: "hero-organic-shape hero-organic-shape--lower",
-    d: "M37.5 63.5C46.2 57.8 59.8 61.8 63.4 71.1C67.3 81 57.6 91.7 44.8 91.1C33.5 90.6 23.9 82.8 24.4 73.7C24.8 66.9 31.2 67.7 37.5 63.5Z",
-  },
-  {
-    key: "left",
-    className: "hero-organic-shape hero-organic-shape--left",
-    d: "M25.5 43.5C34.4 38.2 45 41.8 48.2 51.1C51.3 60.2 43.6 70.1 31.9 70.4C20.9 70.7 12.2 63.4 13.3 54.8C14.1 48.1 19.8 46.8 25.5 43.5Z",
-  },
-  {
-    key: "wide",
-    className: "hero-organic-shape hero-organic-shape--wide",
-    d: "M50.8 24.5C64.1 15.8 83.6 21.9 91.2 36.2C99.1 51.3 88.5 70.3 69 73.2C52.9 75.7 35.2 67 31.2 52.7C27.9 40.7 39.2 32.1 50.8 24.5Z",
+    d: "M31.8 55.4C47.1 44.4 72.2 50.4 80.1 67.3C88.2 84.6 73.5 101.8 50.3 101.3C29.4 100.9 8.6 87.9 8.9 72.6C9.1 61.1 21.6 62.7 31.8 55.4Z",
   },
 ];
 
@@ -54,16 +39,41 @@ function HeroOrganicReveal() {
         focusable="false"
       >
         <defs>
+          <pattern
+            id="hero-washi-fiber"
+            width="9"
+            height="9"
+            patternUnits="userSpaceOnUse"
+          >
+            <circle cx="1.6" cy="2.2" r="0.09" fill="#5f5a51" />
+            <circle cx="5.4" cy="1.3" r="0.07" fill="#ffffff" />
+            <circle cx="7.2" cy="6.6" r="0.08" fill="#5f5a51" />
+            <circle cx="3.1" cy="7.7" r="0.06" fill="#ffffff" />
+          </pattern>
+          <pattern
+            id="hero-shoji-grid"
+            width="25"
+            height="25"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M25 0H0V25"
+              fill="none"
+              stroke="#111111"
+              strokeOpacity="1"
+              strokeWidth="0.16"
+            />
+          </pattern>
           <filter
             id="hero-organic-soft-edge"
-            x="-8"
-            y="-8"
-            width="116"
-            height="116"
+            x="-18"
+            y="-18"
+            width="136"
+            height="136"
             filterUnits="userSpaceOnUse"
             colorInterpolationFilters="sRGB"
           >
-            <feGaussianBlur stdDeviation="0.36" />
+            <feGaussianBlur stdDeviation="1.25" />
           </filter>
           <mask id="hero-organic-paper-mask" maskUnits="userSpaceOnUse">
             <rect width="100" height="100" fill="white" />
@@ -74,6 +84,20 @@ function HeroOrganicReveal() {
           className="hero-organic-paper"
           width="100"
           height="100"
+          mask="url(#hero-organic-paper-mask)"
+        />
+        <rect
+          className="hero-washi-fiber"
+          width="100"
+          height="100"
+          fill="url(#hero-washi-fiber)"
+          mask="url(#hero-organic-paper-mask)"
+        />
+        <rect
+          className="hero-shoji-grid"
+          width="100"
+          height="100"
+          fill="url(#hero-shoji-grid)"
           mask="url(#hero-organic-paper-mask)"
         />
       </svg>
