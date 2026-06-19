@@ -104,8 +104,8 @@ export default function ScrollExpandMedia({
 
       const rect = section.getBoundingClientRect();
       const viewportH = window.innerHeight;
-      const total = Math.max(rect.height - viewportH, 1);
-      const rawProgress = clamp(-rect.top / total);
+      const scrollable = Math.max(rect.height - viewportH, 1);
+      const rawProgress = clamp(-rect.top / scrollable);
 
       setProgress(rawProgress);
     };
@@ -194,7 +194,7 @@ export default function ScrollExpandMedia({
 
   const sectionClassName = reducedMotion
     ? "relative isolate hidden h-svh overflow-clip bg-[#fffdf9] md:block"
-    : "relative isolate hidden h-[145svh] overflow-clip bg-[#fffdf9] md:block lg:h-[155svh]";
+    : "relative isolate hidden h-[115svh] overflow-clip bg-[#fffdf9] md:block lg:h-[125svh]";
 
   return (
     <>
@@ -261,7 +261,7 @@ export default function ScrollExpandMedia({
       </section>
 
       <section
-        className="relative isolate block overflow-hidden bg-[#fffdf9] px-4 py-14 md:hidden"
+        className="relative isolate block overflow-hidden bg-[#fffdf9] px-4 py-10 md:hidden"
         aria-label={title}
       >
         <Image

@@ -1,11 +1,49 @@
+import Image from "next/image";
+import { images } from "@/lib/site";
+
 export function HeroMotionPlaceholder() {
   return (
-    <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-lg border border-black/10 bg-[#fffaf4] shadow-[0_28px_80px_rgba(16,16,16,0.1)]">
-      <div className="absolute right-5 top-5 h-16 w-16 rounded-full bg-[var(--torii-red)] shadow-[0_18px_45px_rgba(196,30,47,0.2)] md:h-24 md:w-24" />
-      <div className="absolute left-5 top-7 h-px w-32 origin-left animate-[lineSweep_4.5s_ease-in-out_infinite] bg-black md:left-8 md:w-56" />
-      <div className="absolute bottom-8 right-7 h-px w-28 origin-left animate-[lineSweep_5.4s_ease-in-out_infinite] bg-black/80 md:w-44" />
+    <div className="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-[24px] border border-black/10 bg-[#fffaf4] p-4 shadow-[0_28px_80px_rgba(16,16,16,0.1)] md:rounded-lg md:p-0">
+      <div className="absolute right-5 top-5 hidden h-16 w-16 rounded-full bg-[var(--torii-red)] shadow-[0_18px_45px_rgba(196,30,47,0.2)] md:block md:h-24 md:w-24" />
+      <div className="absolute left-5 top-7 hidden h-px w-32 origin-left animate-[lineSweep_4.5s_ease-in-out_infinite] bg-black md:left-8 md:block md:w-56" />
+      <div className="absolute bottom-8 right-7 hidden h-px w-28 origin-left animate-[lineSweep_5.4s_ease-in-out_infinite] bg-black/80 md:block md:w-44" />
 
-      <div className="relative grid aspect-[4/5] content-between p-6 md:aspect-[5/4] md:p-8">
+      <div className="md:hidden">
+        <div className="relative h-[210px] overflow-hidden rounded-[24px] bg-neutral-950">
+          <Image
+            src={images.fachada}
+            alt="Fachada do Torii Restaurante Japonês à noite"
+            fill
+            sizes="(max-width: 768px) 100vw, 480px"
+            quality={86}
+            loading="lazy"
+            className="object-cover object-[45%_50%]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/8 to-transparent" />
+          <div className="absolute bottom-4 left-4 right-4">
+            <p className="text-[0.68rem] font-black uppercase tracking-[0.08em] text-white/82">
+              TORII À NOITE
+            </p>
+            <p className="mt-2 max-w-[15rem] text-2xl font-black leading-[1.02] text-white drop-shadow-[0_10px_28px_rgba(0,0,0,0.26)]">
+              Salão, entrega e retirada.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-3">
+          {["Rodízio no salão", "Delivery", "Retirada"].map((item) => (
+            <div
+              key={item}
+              className="flex items-center justify-between border-b border-black/10 pb-3 text-xs font-black uppercase tracking-wide text-neutral-800 last:border-0 last:pb-0"
+            >
+              <span>{item}</span>
+              <span className="h-1.5 w-8 rounded-full bg-[var(--torii-red)]/85" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative hidden aspect-[5/4] content-between p-8 md:grid">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.08em] text-[var(--torii-red)]">
             Torii a noite
