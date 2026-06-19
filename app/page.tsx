@@ -39,12 +39,6 @@ const experiences = [
   },
 ];
 
-const googleProofCards = [
-  { label: "Nota no Google", value: "4,4" },
-  { label: "Avaliações", value: "382" },
-  { label: "Perfil", value: "Torii-Japanese" },
-];
-
 export default function Home() {
   return (
     <>
@@ -139,8 +133,8 @@ export default function Home() {
             <Reveal threshold={0.45}>
               <SectionIntro
                 eyebrow="Experiências"
-                title="Escolha como aproveitar o Torii."
-                copy="Três caminhos claros para a mesma cozinha japonesa: salão, delivery ou retirada."
+                title="Escolha sua noite no Torii."
+                copy="Rodízio no salão, delivery ou retirada: três formas diretas de aproveitar a cozinha japonesa à noite."
               />
             </Reveal>
             <div className="mt-9 grid gap-4 md:grid-cols-3">
@@ -236,83 +230,22 @@ export default function Home() {
 
         <FoodGallerySection />
 
-        <section className="section-pad relative bg-[var(--torii-black)] text-white">
-          <div className="absolute left-0 top-0 h-px w-full bg-white/16" />
-          <div className="absolute right-8 top-10 h-24 w-24 rounded-full bg-[var(--torii-red)] md:h-36 md:w-36" />
-          <Reveal
-            threshold={0.45}
-            className="container-page relative grid gap-9 md:grid-cols-[1fr_0.9fr] md:items-center"
-          >
-            <SectionIntro
-              eyebrow="Rodízio à noite"
-              title="Para sentar, aproveitar e experimentar variedade durante a noite."
-              copy="Uma escolha para quem quer jantar com calma, compartilhar a mesa e provar mais variedade."
-              light
-            />
-            <div className="rounded-lg border border-white/12 bg-white/6 p-6 backdrop-blur">
-              <ul className="grid gap-3 text-base font-bold text-white/82">
-                {["Ideal para famílias", "Casais", "Grupos", "Jantar à noite"].map(
-                  (item) => (
-                    <li
-                      key={item}
-                      className="flex items-center gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0"
-                    >
-                      <span className="h-2 w-2 rounded-full bg-[var(--torii-red)]" />
-                      {item}
-                    </li>
-                  ),
-                )}
-              </ul>
-              <a
-                href={buildWhatsappLink(whatsappMessages.rodizioSection)}
-                className="btn btn-primary mt-7"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Reservar mesa
-              </a>
-            </div>
-          </Reveal>
-        </section>
-
         <section className="section-pad bg-white">
           <div className="container-page">
             <Reveal
               threshold={0.42}
-              className="grid gap-8 md:grid-cols-[0.8fr_1.2fr] md:items-start"
+              className="max-w-3xl"
             >
-              <div>
-                <span className="eyebrow">Prova social</span>
-                <div className="mt-5 rounded-lg border border-black/10 bg-[#fffdf9] p-6">
-                  <p className="text-2xl font-black text-[var(--torii-red)]">
-                    ★★★★★
-                  </p>
-                  <h2 className="mt-3 text-3xl font-black leading-tight text-neutral-950">
-                    Quem conhece, volta.
-                  </h2>
-                  <p className="mt-3 text-base font-bold leading-7 text-neutral-600">
-                    4,4 no Google com 382 avaliações de clientes do
-                    Torii-Japanese.
-                  </p>
-                </div>
-              </div>
-              <div className="grid gap-4 md:grid-cols-3">
-                {googleProofCards.map((item, index) => (
-                  <Reveal key={item.label} delay={index * 80} threshold={0.22}>
-                    <article className="fine-border rounded-lg bg-white p-5 shadow-sm">
-                      <p className="text-xs font-black uppercase tracking-wide text-[var(--torii-red)]">
-                        Avaliação do Google
-                      </p>
-                      <p className="mt-4 text-3xl font-black text-neutral-950">
-                        {item.value}
-                      </p>
-                      <p className="mt-2 text-sm font-bold text-neutral-600">
-                        {item.label}
-                      </p>
-                    </article>
-                  </Reveal>
-                ))}
-              </div>
+              <p className="text-sm font-black text-[var(--torii-red)]">
+                ★★★★★ 4,4 no Google · 382 avaliações
+              </p>
+              <h2 className="mt-4 text-4xl font-black leading-[1.04] text-neutral-950 md:text-6xl">
+                Quem conhece, volta.
+              </h2>
+              <p className="mt-5 max-w-2xl text-base font-bold leading-7 text-neutral-600 md:text-lg">
+                Uma casa de comida japonesa para jantar com calma, pedir em casa
+                ou retirar no caminho.
+              </p>
             </Reveal>
           </div>
         </section>

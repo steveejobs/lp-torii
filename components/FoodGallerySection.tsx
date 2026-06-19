@@ -143,7 +143,7 @@ export function FoodGallerySection() {
     <section
       id="destaques"
       ref={sectionRef}
-      className="section-pad overflow-hidden bg-[#f7f2ec]"
+      className="overflow-hidden bg-[#f7f2ec] pb-12 pt-10 md:pb-16 md:pt-12"
     >
       <div className="container-page">
         <div className="grid gap-7 md:grid-cols-[0.82fr_1.18fr] md:items-end">

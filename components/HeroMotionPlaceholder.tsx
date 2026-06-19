@@ -11,13 +11,13 @@ export function HeroMotionPlaceholder() {
       <div className="md:hidden">
         <div className="relative h-[210px] overflow-hidden rounded-[24px] bg-neutral-950">
           <Image
-            src={images.fachada}
-            alt="Fachada do Torii Restaurante Japonês à noite"
+            src={images.heroIntro}
+            alt="Ambiente interno do Torii com luz quente"
             fill
             sizes="(max-width: 768px) 100vw, 480px"
             quality={86}
             loading="lazy"
-            className="object-cover object-[45%_50%]"
+            className="object-cover object-[58%_38%]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/8 to-transparent" />
           <div className="absolute bottom-4 left-4 right-4">
@@ -25,13 +25,13 @@ export function HeroMotionPlaceholder() {
               TORII À NOITE
             </p>
             <p className="mt-2 max-w-[15rem] text-2xl font-black leading-[1.02] text-white drop-shadow-[0_10px_28px_rgba(0,0,0,0.26)]">
-              Salão, entrega e retirada.
+              Noite japonesa em Araguaína.
             </p>
           </div>
         </div>
 
         <div className="mt-5 grid gap-3">
-          {["Rodízio no salão", "Delivery", "Retirada"].map((item) => (
+          {["Luz quente", "Madeira", "Ritmo de jantar"].map((item) => (
             <div
               key={item}
               className="flex items-center justify-between border-b border-black/10 pb-3 text-xs font-black uppercase tracking-wide text-neutral-800 last:border-0 last:pb-0"
@@ -46,15 +46,15 @@ export function HeroMotionPlaceholder() {
       <div className="relative hidden aspect-[5/4] content-between p-8 md:grid">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.08em] text-[var(--torii-red)]">
-            Torii a noite
+            Torii à noite
           </p>
           <p className="mt-4 max-w-[15rem] text-4xl font-black leading-[0.95] text-neutral-950 md:text-5xl">
-            Salao, entrega e retirada.
+            Noite japonesa em Araguaína.
           </p>
         </div>
 
         <div className="grid gap-3">
-          {["Rodizio no salao", "Delivery", "Retirada"].map((item) => (
+          {["Luz quente", "Madeira", "Ritmo de jantar"].map((item) => (
             <div
               key={item}
               className="flex items-center justify-between border-b border-black/12 pb-3 text-sm font-black uppercase tracking-wide text-neutral-800"

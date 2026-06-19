@@ -6,7 +6,6 @@ import { InstagramVideoMoment } from "@/components/InstagramVideoMoment";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { toriiReviews } from "@/data/torii-reviews";
 import {
-  facadeMedia,
   foodGalleryMedia,
   logoMedia,
   scrollExperienceMedia,
@@ -15,7 +14,6 @@ import {
   ADDRESS,
   FULL_SITE_URL,
   GOOGLE_MAPS_URL,
-  INSTAGRAM_URL,
   OPENING_HOURS,
   createWhatsAppLink,
 } from "@/lib/site";
@@ -57,14 +55,10 @@ const instagramGalleryMedia = [
   foodGalleryMedia[9],
   foodGalleryMedia[2],
   foodGalleryMedia[5],
-  facadeMedia,
   foodGalleryMedia[11],
   foodGalleryMedia[14],
   foodGalleryMedia[17],
-  foodGalleryMedia[18],
 ];
-
-const nightChoices = ["Rodízio à noite", "Delivery", "Retirada"];
 
 function IconRoute() {
   return (
@@ -82,17 +76,6 @@ function IconArrow() {
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
       <path
         d="M13.2 5.25 20 12l-6.8 6.75-1.35-1.35 4.45-4.45H4v-1.9h12.3L11.85 6.6l1.35-1.35Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function IconCamera() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5">
-      <path
-        d="M7.25 3.5h9.5A3.76 3.76 0 0 1 20.5 7.25v9.5a3.76 3.76 0 0 1-3.75 3.75h-9.5a3.76 3.76 0 0 1-3.75-3.75v-9.5A3.76 3.76 0 0 1 7.25 3.5Zm0 1.8A1.96 1.96 0 0 0 5.3 7.25v9.5a1.96 1.96 0 0 0 1.95 1.95h9.5a1.96 1.96 0 0 0 1.95-1.95v-9.5a1.96 1.96 0 0 0-1.95-1.95h-9.5Zm4.75 3.15a3.55 3.55 0 1 1 0 7.1 3.55 3.55 0 0 1 0-7.1Zm0 1.8a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Zm4.15-2.55a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"
         fill="currentColor"
       />
     </svg>
@@ -198,41 +181,15 @@ export default function InstagramLinksPage() {
           <LinkButton href={whatsappLinks.pickup} icon={<IconBag />} delay={290}>
             Pedir para retirada
           </LinkButton>
-          <LinkButton href={GOOGLE_MAPS_URL} icon={<IconRoute />} delay={360}>
-            Ver localização
-          </LinkButton>
-          <LinkButton href={FULL_SITE_URL} icon={<IconArrow />} delay={430}>
+          <LinkButton href={FULL_SITE_URL} icon={<IconArrow />} delay={360}>
             Acessar site completo
-          </LinkButton>
-          <LinkButton href={INSTAGRAM_URL} icon={<IconCamera />} delay={500}>
-            Instagram
           </LinkButton>
         </nav>
 
         <InstagramVideoMoment
           videoSrc={scrollExperienceMedia.mobileVideo}
-          posterSrc={foodGalleryMedia[19].src}
+          posterSrc={scrollExperienceMedia.background.src}
         />
-
-        <section
-          className="ig-rise mt-5 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.04)]"
-          style={{ "--ig-delay": "570ms" } as React.CSSProperties}
-        >
-          <p className="text-sm font-black">Escolha sua noite</p>
-          <p className="mt-1 text-sm font-bold leading-6 text-neutral-600">
-            Escolha como aproveitar o Torii hoje.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {nightChoices.map((choice) => (
-              <span
-                key={choice}
-                className="rounded-full border border-[#eaded4] bg-[#fff8f1] px-3 py-2 text-xs font-black text-neutral-800"
-              >
-                {choice}
-              </span>
-            ))}
-          </div>
-        </section>
 
         <InstagramTestimonialsMarquee reviews={toriiReviews} />
 
@@ -241,47 +198,9 @@ export default function InstagramLinksPage() {
           style={{ "--ig-delay": "640ms" } as React.CSSProperties}
         >
           <h2 className="text-2xl font-black leading-tight">
-            Reserve sua noite no Torii.
+            Estamos em Araguaína.
           </h2>
-          <div className="mt-4 grid gap-2">
-            <a
-              href={whatsappLinks.reservation}
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--torii-red)] text-sm font-black text-white active:scale-[0.985]"
-            >
-              <WhatsAppIcon className="h-4 w-4" />
-              Reservar pelo WhatsApp
-            </a>
-            <div className="grid grid-cols-2 gap-2">
-              <a
-                href={whatsappLinks.delivery}
-                target="_blank"
-                rel="noreferrer"
-                className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-white text-sm font-black text-neutral-950 active:scale-[0.985]"
-              >
-                <IconBag />
-                Delivery
-              </a>
-              <a
-                href={GOOGLE_MAPS_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-white text-sm font-black text-neutral-950 active:scale-[0.985]"
-              >
-                <IconRoute />
-                Abrir rota
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section
-          className="ig-rise mt-4 rounded-[22px] border border-black/10 bg-white p-4 shadow-[0_10px_26px_rgba(16,16,16,0.04)]"
-          style={{ "--ig-delay": "700ms" } as React.CSSProperties}
-        >
-          <h2 className="text-lg font-black">Estamos em Araguaína</h2>
-          <div className="mt-3 space-y-2 text-sm font-bold leading-6 text-neutral-600">
+          <div className="mt-3 space-y-2 text-sm font-bold leading-6 text-white/72">
             <p>{ADDRESS}</p>
             <p>{OPENING_HOURS}</p>
           </div>
@@ -290,7 +209,7 @@ export default function InstagramLinksPage() {
               href={GOOGLE_MAPS_URL}
               target="_blank"
               rel="noreferrer"
-              className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-neutral-950 text-sm font-black text-white active:scale-[0.985]"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full bg-white text-sm font-black text-neutral-950 active:scale-[0.985]"
             >
               <IconRoute />
               Abrir rota
